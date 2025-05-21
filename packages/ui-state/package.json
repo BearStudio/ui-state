@@ -1,0 +1,53 @@
+{
+  "name": "@bearstudio/ui-state",
+  "version": "1.0.0",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "description": "A lightweight utility library to easily manage UI display states such as loading, error or any custom-defined state",
+  "keywords": [
+    "typescript",
+    "state",
+    "ui",
+    "ts",
+    "pattern"
+  ],
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BearStudio/ui-state.git",
+    "directory": "packages/ui-state"
+  },
+  "bugs": {
+    "url": "https://github.com/BearStudio/ui-state/issues"
+  },
+  "scripts": {
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
+    "build": "tsup src/index.ts --format esm,cjs --dts --minify",
+    "lint": "eslint src/"
+  },
+  "devDependencies": {
+    "@bearstudio/eslint-config": "workspace:*",
+    "@bearstudio/typescript-config": "workspace:*",
+    "@types/node": "22.15.3",
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.1",
+    "eslint": "9.27.0",
+    "tsup": "8.5.0",
+    "typescript": "5.8.2"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  }
+}
