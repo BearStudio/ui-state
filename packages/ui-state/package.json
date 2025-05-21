@@ -34,7 +34,8 @@
   "scripts": {
     "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
     "build": "tsup src/index.ts --format esm,cjs --dts --minify",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "test": "true"
   },
   "devDependencies": {
     "@bearstudio/eslint-config": "workspace:*",
