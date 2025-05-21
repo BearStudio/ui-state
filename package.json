@@ -11,12 +11,39 @@
   },
   "devDependencies": {
     "@changesets/cli": "2.29.4",
-    "prettier": "^3.5.3",
-    "turbo": "^2.5.3",
+    "prettier": "3.5.3",
+    "turbo": "2.5.3",
     "typescript": "5.8.2"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=18"
-  }
+  },
+  "contributors": [
+    {
+      "name": "Hugo Perard",
+      "email": "hugo@bearstudio.fr",
+      "url": "https://github.com/hugoperard"
+    },
+    {
+      "name": "Renan Decamps",
+      "email": "renan@bearstudio.fr",
+      "url": "https://github.com/decampsrenan"
+    },
+    {
+      "name": "Yoann Fleury",
+      "email":  "yoannfleurydev@gmail.com",
+      "url": "https://github.com/yoannfleurydev"
+    },
+    {
+      "name": "Ivan Dalmet",
+      "email": "ivan@dalmet.fr",
+      "url": "https://github.com/ivan-dalmet"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/bearstudio/ui-state/issues"
+  },
+  "homepage": "https://github.com/bearstudio/ui-state#readme",
+  "license": "MIT"
 }
