@@ -42,15 +42,13 @@ ui.match("pending", () => <>Loading...</>)
 ## 🪄 Fully customizable and type-safe
 
 ```tsx
-const date = new Date();
 const ui = getUiState((set) => {
-  if (date.getDay() === 0) return set("monday");
-  if (date.getDay() === 1) return set("tuesday");
-
-  return set("other-day");
+  if (booksToImport === null) return set('show-input');
+  if (booksToImport.length === 0) return set('empty');
+  return set('listing', { booksToImport });
 });
 
-ui.is("monday") // valid
+ui.is("show-input") // valid
 ui.is("default") // invalid
 ```
 
