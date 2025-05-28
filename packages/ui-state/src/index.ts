@@ -23,7 +23,7 @@ type UiState<
   Status extends AvailableStatus,
   Data extends Record<string, unknown>,
 > = {
-  is: <S extends Status>(status: S) => boolean;
+  is: <S extends Status>(status: S | S[]) => boolean;
   state: {
     __status: Status;
   } & Data;
@@ -34,7 +34,7 @@ type UiState<
       "__status"
     >,
   >(
-    status: S | Array<S>,
+    status: S | S[],
     handler: (
       data: SData,
     ) => React.ReactNode | ((...args: ExplicitAny[]) => React.ReactNode),
@@ -48,7 +48,7 @@ type UiState<
       "__status"
     >,
   >(
-    status: S | Array<S>,
+    status: S | S[],
     handler: (
       data: SData,
     ) => React.ReactNode | ((...args: ExplicitAny[]) => React.ReactNode),
@@ -92,19 +92,18 @@ export const getUiState = <
 
   const isMatchingArray = <S extends Status>(
     status: Array<Status>,
-  ): status is Array<S> => status.includes(state.__status);
+  ): status is S[] => status.some(s => s === state.__status);
+
+  const isMatchingStatus = <S extends Status>(status: S | S[]) =>
+    typeof status === "string" ? isMatching(status) : isMatchingArray(status)
 
   const uiState: UiState<Status, Data> = {
     state,
     is: (status) => {
-      return state.__status === status;
+      return isMatchingStatus(status);
     },
     when: (status, handler) => {
-      if (
-        typeof status === "string"
-          ? isMatching(status)
-          : isMatchingArray(status as Array<Status>)
-      ) {
+      if (isMatchingStatus(status)) {
         return handler(state as ExplicitAny) as React.ReactNode;
       }
       return null;
@@ -112,12 +111,7 @@ export const getUiState = <
     nonExhaustive: () => null,
     exhaustive: () => null,
     match: (status, handler, __matched = false, render = () => null) => {
-      if (
-        !__matched &&
-        (typeof status === "string"
-          ? isMatching(status)
-          : isMatchingArray(status as Array<Status>))
-      ) {
+      if (!__matched && isMatchingStatus(status)) {
         return {
           exhaustive: () => handler(state as ExplicitAny) as React.ReactNode,
           nonExhaustive: () => handler(state as ExplicitAny) as React.ReactNode,
