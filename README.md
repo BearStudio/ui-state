@@ -39,6 +39,55 @@ ui.match("pending", () => <>Loading...</>)
   .exhaustive();
 ```
 
+## 🪄 Fully customizable and type-safe
+
+```tsx
+const date = new Date();
+const ui = getUiState((set) => {
+  if (date.getDay() === 0) return set("monday");
+  if (date.getDay() === 1) return set("tuesday");
+
+  return set("other-day");
+});
+
+ui.is("monday") // valid
+ui.is("default") // invalid
+```
+
+
+## 📖 APIs
+
+#### `is`
+
+```tsx
+ui.is("pending"); // Return true if state is `pending`, false otherwise
+```
+
+#### `when`
+
+```tsx
+ui.when("pending", () => <>Loading...</>); // Render only when state is `pending`
+```
+
+#### `match` + `exhaustive`
+
+```tsx
+ui
+  .match("pending", () => <>Loading...</>); // Render when state is `pending`
+  .match("error", () => <>Error...</>); // Render when state is `error`
+  .match("default", () => <>Error...</>); // Render when state is `default`
+  .exhaustive(); // Ensures all possible states are matched and rendered
+```
+
+#### `match` + `nonExhaustive`
+
+```tsx
+ui
+  .match("pending", () => <>Loading...</>); // Render when state is `pending`
+  .match("default", () => <>Error...</>); // Render when state is `default`
+  .nonExhaustive(); // Allows rendering without matching all possible states
+```
+
 ## 📃 License MIT
 
 > Made with ❤️ by BearStudio Team
