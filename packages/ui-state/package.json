@@ -1,6 +1,6 @@
 {
   "name": "@bearstudio/ui-state",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -48,7 +48,7 @@
     "typescript": "5.8.2"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   }
 }
