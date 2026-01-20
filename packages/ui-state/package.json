@@ -35,17 +35,25 @@
     "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
     "build": "tsup src/index.ts --format esm,cjs --dts --minify",
     "lint": "eslint src/",
-    "test": "true"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui"
   },
   "devDependencies": {
     "@bearstudio/eslint-config": "workspace:*",
     "@bearstudio/typescript-config": "workspace:*",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
     "@types/node": "22.15.3",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.1",
+    "@vitest/ui": "4.0.17",
     "eslint": "9.27.0",
+    "happy-dom": "20.3.4",
+    "jsdom": "27.4.0",
     "tsup": "8.5.0",
-    "typescript": "5.8.2"
+    "typescript": "5.8.2",
+    "vitest": "4.0.17"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

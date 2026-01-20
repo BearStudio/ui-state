@@ -2,3 +2,6 @@ src/
 .turbo
 eslint.*
 tsconfig.*
+vitest.*
+*.test.*
+*.spec.*
