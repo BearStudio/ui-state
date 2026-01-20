@@ -8,7 +8,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "publish-packages": "turbo run build lint test && changeset version && changeset publish",
-    "test": "true"
+    "test": "turbo run test"
   },
   "devDependencies": {
     "@changesets/cli": "2.29.4",
@@ -33,7 +33,7 @@
     },
     {
       "name": "Yoann Fleury",
-      "email":  "yoannfleurydev@gmail.com",
+      "email": "yoannfleurydev@gmail.com",
       "url": "https://github.com/yoannfleurydev"
     },
     {

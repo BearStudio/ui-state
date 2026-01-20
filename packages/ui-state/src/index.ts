@@ -29,16 +29,15 @@ type UiState<
   } & Data;
   when: <
     S extends Status,
+    R = React.ReactNode,
     SData = Omit<
       Extract<UiState<Status, Data>["state"], { __status: S }>,
       "__status"
     >,
   >(
     status: S | Array<S>,
-    handler: (
-      data: SData,
-    ) => React.ReactNode | ((...args: ExplicitAny[]) => React.ReactNode),
-  ) => React.ReactNode;
+    handler: (data: SData) => R,
+  ) => R | null;
   exhaustive: () => ExhaustiveError<`\`exhaustive()\` should be use after \`match\``>;
   nonExhaustive: () => NonExhaustiveError<`\`nonExhaustive()\` should be use after \`match\``>;
   match: <
@@ -80,12 +79,14 @@ export const getUiState = <
     ) => { __status: S } & SData,
   ) => { __status: Status } & Data,
 ): UiState<Status, Data> => {
-  const state = getState((status, data = {} as ExplicitAny) => {
-    return {
-      __status: status,
-      ...data,
-    };
-  });
+  const state = Object.freeze(
+    getState((status, data = {} as ExplicitAny) => {
+      return {
+        __status: status,
+        ...data,
+      };
+    }),
+  );
 
   const isMatching = <S extends Status>(status: Status): status is S =>
     status === state.__status;
@@ -105,7 +106,7 @@ export const getUiState = <
           ? isMatching(status)
           : isMatchingArray(status as Array<Status>)
       ) {
-        return handler(state as ExplicitAny) as React.ReactNode;
+        return handler(state as ExplicitAny);
       }
       return null;
     },

@@ -43,15 +43,14 @@ ui.match("pending", () => <>Loading...</>)
 
 ```tsx
 const ui = getUiState((set) => {
-  if (booksToImport === null) return set('show-input');
-  if (booksToImport.length === 0) return set('empty');
-  return set('listing', { booksToImport });
+  if (booksToImport === null) return set("show-input");
+  if (booksToImport.length === 0) return set("empty");
+  return set("listing", { booksToImport });
 });
 
-ui.is("show-input") // valid
-ui.is("default") // invalid
+ui.is("show-input"); // valid
+ui.is("default"); // invalid
 ```
-
 
 ## 📖 APIs
 
