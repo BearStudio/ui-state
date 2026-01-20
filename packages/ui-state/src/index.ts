@@ -79,12 +79,14 @@ export const getUiState = <
     ) => { __status: S } & SData,
   ) => { __status: Status } & Data,
 ): UiState<Status, Data> => {
-  const state = getState((status, data = {} as ExplicitAny) => {
-    return {
-      __status: status,
-      ...data,
-    };
-  });
+  const state = Object.freeze(
+    getState((status, data = {} as ExplicitAny) => {
+      return {
+        __status: status,
+        ...data,
+      };
+    }),
+  );
 
   const isMatching = <S extends Status>(status: Status): status is S =>
     status === state.__status;

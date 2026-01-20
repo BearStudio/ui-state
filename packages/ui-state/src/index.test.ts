@@ -460,11 +460,7 @@ describe("getUiState", () => {
     it("should not allow state mutation", () => {
       const ui = getUiState((set) => set("default", { value: 42 }));
 
-      const originalStatus = ui.state.__status;
-      const originalValue = ui.state.value;
-
-      expect(ui.state.__status).toBe(originalStatus);
-      expect(ui.state.value).toBe(originalValue);
+      expect(Object.isFrozen(ui.state)).toBe(true);
     });
   });
 });
