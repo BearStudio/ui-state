@@ -18,5 +18,5 @@
     "typescript/no-unnecessary-type-parameters": "off",
     "typescript/no-unsafe-type-assertion": "off"
   },
-  "ignorePatterns": ["**/dist/**", "**/coverage/**"]
+  "ignorePatterns": ["**/dist/**", "**/coverage/**", "**/.astro/**"]
 }
