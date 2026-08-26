@@ -108,13 +108,10 @@ describe("getUiState", () => {
     it("should render the matched status", () => {
       const ui = getUiState((set) => set("pending"));
 
-      // @ts-expect-error this typings should always break as default is not defined
-      const result = ui
-        .match("pending", () => "Loading...")
-        // @ts-expect-error this typings should always break as default is not defined
-        .match("default", () => "Content")
-        // @ts-expect-error this typings should always break as default is not defined
-        .exhaustive();
+      const matched = ui.match("pending", () => "Loading...");
+      const result = matched.exhaustive();
+      // @ts-expect-error extra match after all statuses matched
+      matched.match("default", () => "Content");
 
       expect(result).toBe("Loading...");
     });
@@ -122,13 +119,10 @@ describe("getUiState", () => {
     it("should render the correct match for default status", () => {
       const ui = getUiState((set) => set("default", { value: "test" }));
 
-      // @ts-expect-error this typings should always break as pending is not defined
-      const result = ui
-        .match("default", (data) => `Content: ${data.value}`)
-        // @ts-expect-error this typings should always break as pending is not defined
-        .match("pending", () => "Loading...")
-        // @ts-expect-error this typings should always break as pending is not defined
-        .exhaustive();
+      const matched = ui.match("default", (data) => `Content: ${data.value}`);
+      const result = matched.exhaustive();
+      // @ts-expect-error extra match after all statuses matched
+      matched.match("pending", () => "Loading...");
 
       expect(result).toBe("Content: test");
     });
@@ -136,21 +130,19 @@ describe("getUiState", () => {
     it("should handle multiple statuses in a single match", () => {
       const ui = getUiState((set) => set("error"));
 
-      // @ts-expect-error this typings should always break as not-found and default are not defined
       const result = ui
-        // @ts-expect-error this typings should always break as not-found is not defined
+        // @ts-expect-error not-found is not defined
         .match(["error", "not-found"], () => "Error occurred")
-        // @ts-expect-error this typings should always break as default is not defined
-        .match("default", () => "Content")
-        // @ts-expect-error this typings should always break as not-found and default are not defined
         .exhaustive();
 
       expect(result).toBe("Error occurred");
+
+      // @ts-expect-error extra match after all statuses matched
+      ui.match("error", () => "Error occurred").match("default", () => "Content");
     });
 
     it("should pass data to handler", () => {
-      // oxlint-disable-next-line prefer-const
-      let status = "default";
+      const status = "default" as "pending" | "error" | "default";
       const ui = getUiState((set) => {
         if (status === "pending") {
           return set("pending");
@@ -173,8 +165,12 @@ describe("getUiState", () => {
     });
 
     it("should chain multiple matches correctly", () => {
-      // oxlint-disable-next-line prefer-const
-      let status = "empty";
+      const status = "empty" as
+        | "default"
+        | "not-found"
+        | "pending"
+        | "error"
+        | "empty";
       const ui = getUiState((set) => {
         if (status === "default") {
           return set("default");
@@ -199,6 +195,7 @@ describe("getUiState", () => {
         .match("pending", () => "Loading")
         .match("error", () => "Error")
         .match("empty", () => "No items")
+        .match("not-found", () => "Not found")
         .match("default", () => "Content")
         .exhaustive();
 
@@ -206,8 +203,7 @@ describe("getUiState", () => {
     });
 
     it("should only execute the first matching handler", () => {
-      // oxlint-disable-next-line prefer-const
-      let status = "pending";
+      const status = "pending" as "pending" | "default";
       const ui = getUiState((set) => {
         if (status === "default") {
           return set("default");
@@ -218,23 +214,20 @@ describe("getUiState", () => {
 
       let executionCount = 0;
 
-      // @ts-expect-error this typings should always break as pending cannot be declared twice
-      const result = ui
-        .match("pending", () => {
-          executionCount++;
-          return "First match";
-        })
-        // @ts-expect-error this typings should always break as pending cannot be declared twice
-        .match("pending", () => {
-          executionCount++;
-          return "Second match";
-        })
-        // @ts-expect-error this typings should always break as pending cannot be declared twice
+      const matchedOnce = ui.match("pending", () => {
+        executionCount++;
+        return "First match";
+      });
+      // @ts-expect-error pending cannot be declared twice
+      matchedOnce.match("pending", () => {
+        executionCount++;
+        return "Second match";
+      });
+      const result = matchedOnce
         .match("default", () => {
           executionCount++;
           return "Third match";
         })
-        // @ts-expect-error this typings should always break as pending cannot be declared twice
         .exhaustive();
 
       expect(result).toBe("First match");
@@ -252,8 +245,7 @@ describe("getUiState", () => {
     });
 
     it("should return null when no status matches", () => {
-      // oxlint-disable-next-line prefer-const
-      let status = "default";
+      const status = "default" as "pending" | "error" | "default";
       const ui = getUiState((set) => {
         if (status === "pending") {
           return set("pending");
@@ -285,8 +277,7 @@ describe("getUiState", () => {
     });
 
     it("should handle array of statuses", () => {
-      // oxlint-disable-next-line prefer-const
-      let status = "not-found";
+      const status = "not-found" as "error" | "not-found";
       const ui = getUiState((set) => {
         if (status === "error") {
           return set("error");
@@ -316,13 +307,19 @@ describe("getUiState", () => {
 
       const errorUi = createUiState("error");
       expect(errorUi.is("error")).toBe(true);
-      // @ts-expect-error TS tests can't infer the attribute here
+      // @ts-expect-error state is still a union; callback is not narrowed by the param
       expect(errorUi.state.message).toBe("Something went wrong");
+      if (errorUi.is("error")) {
+        expect(errorUi.state.message).toBe("Something went wrong");
+      }
 
       const successUi = createUiState("success");
       expect(successUi.is("default")).toBe(true);
-      // @ts-expect-error TS tests can't infer the attribute here
+      // @ts-expect-error state is still a union; callback is not narrowed by the param
       expect(successUi.state.data).toBe("Success!");
+      if (successUi.is("default")) {
+        expect(successUi.state.data).toBe("Success!");
+      }
     });
 
     it("should handle empty data object", () => {
@@ -371,8 +368,12 @@ describe("getUiState", () => {
     });
 
     it("should handle match chains with mixed array and single status matches", () => {
-      // oxlint-disable-next-line prefer-const
-      let status = "error";
+      const status = "error" as
+        | "default"
+        | "not-found"
+        | "pending"
+        | "empty"
+        | "error";
       const ui = getUiState((set) => {
         if (status === "default") {
           return set("default");
