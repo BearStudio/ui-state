@@ -26,18 +26,18 @@ const install = "pnpm add @bearstudio/ui-state";
         <ul class="flex items-center gap-1 text-sm">
           <li>
             <a
-              href="#demo"
+              href="#compare"
               class="inline-flex min-h-11 items-center px-2 text-ink-soft hover:text-ink"
             >
-              Demo
+              Compare
             </a>
           </li>
           <li>
             <a
-              href="#install"
+              href="#demo"
               class="inline-flex min-h-11 items-center px-2 text-ink-soft hover:text-ink"
             >
-              Install
+              Demo
             </a>
           </li>
           <li>
@@ -54,51 +54,44 @@ const install = "pnpm add @bearstudio/ui-state";
   </header>
 
   <main id="main">
-    <section class="mx-auto max-w-6xl px-4 py-16 sm:py-24">
-      <div class="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
-        <div class="lg:col-span-5">
-          <h1
-            class="text-4xl font-medium tracking-tight text-balance sm:text-5xl"
-          >
-            UI states you can exhaust.
-          </h1>
-          <p class="mt-5 max-w-[46ch] text-lg text-ink-soft text-pretty">
-            <code class="font-mono text-[0.95em] text-ink">getUiState</code> maps
-            pending, error, and the statuses you actually have onto one
-            <code class="font-mono text-[0.95em] text-ink">match</code> chain.
-            <code class="font-mono text-[0.95em] text-ink">exhaustive()</code> is
-            a type error until every status has a branch. For React screens that
-            already know if a query is loading — not a new store.
-          </p>
-          <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
-            <pre
-              class="m-0 overflow-x-auto rounded-lg border border-line bg-paper-2 px-4 py-2.5 font-mono text-sm"
-            ><code>{install}</code></pre>
-            <a href={github} class="text-sm text-ink-soft hover:text-ink">
-              GitHub
-            </a>
-          </div>
-        </div>
-        <div class="lg:col-span-7">
-          <HeroCode />
+    <section class="border-b border-line">
+      <div class="mx-auto max-w-3xl px-4 py-20 text-center sm:py-28">
+        <h1
+          class="text-4xl font-medium tracking-tight text-balance sm:text-6xl"
+        >
+          UI states you can exhaust.
+        </h1>
+        <p class="mx-auto mt-6 max-w-[46ch] text-lg text-ink-soft text-pretty">
+          <code class="font-mono text-[0.95em] text-ink">getUiState</code> maps
+          pending, error, and the statuses you actually have onto one
+          <code class="font-mono text-[0.95em] text-ink">match</code> chain.
+          Miss a status,
+          <code class="font-mono text-[0.95em] text-ink">exhaustive()</code> is a
+          type error. For React screens that already know if a query is loading
+          — not a new store.
+        </p>
+        <div class="mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+          <pre
+            class="m-0 overflow-x-auto rounded-lg border border-line bg-paper-2 px-4 py-2.5 text-left font-mono text-sm"
+          ><code>{install}</code></pre>
+          <a href={github} class="text-sm text-ink-soft hover:text-ink">
+            GitHub
+          </a>
         </div>
       </div>
     </section>
 
-    <section class="border-t border-line bg-paper-2">
-      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-20 lg:grid-cols-2 lg:items-start">
-        <div>
-          <h2 class="text-2xl font-medium">
-            Miss a status, tsc fails.
-          </h2>
-          <p class="mt-3 text-ink-soft">
-            Loading, error, data. Then empty. Then not-found. Each new status is
-            another branch to paste into every screen. Miss one and a ternary
-            still typechecks. <code class="font-mono text-ink">exhaustive()</code>
-            does not.
-          </p>
+    <section id="compare" class="bg-paper-2">
+      <div class="mx-auto max-w-6xl px-4 py-20">
+        <h2 class="text-2xl font-medium">Same screen, with and without.</h2>
+        <p class="mt-3 max-w-[50ch] text-ink-soft">
+          Nested ternaries swallow empty and still typecheck.
+          <code class="font-mono text-ink">exhaustive()</code> does not.
+        </p>
+        <div class="mt-10 grid items-start gap-8 lg:grid-cols-2">
+          <NestedTernary />
+          <HeroCode />
         </div>
-        <NestedTernary />
       </div>
     </section>
 
