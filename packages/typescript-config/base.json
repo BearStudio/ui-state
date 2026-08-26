@@ -11,8 +11,10 @@
     "moduleDetection": "force",
     "moduleResolution": "NodeNext",
     "noUncheckedIndexedAccess": true,
+    "noUncheckedSideEffectImports": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "stableTypeOrdering": true,
     "strict": true,
     "target": "ES2022"
   }
