@@ -1,23 +1,25 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-ibm-plex-sans), ui-sans-serif, system-ui,
-    sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-roboto-slab), ui-serif, Georgia, serif;
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
-  --color-paper: #f3eee4;
-  --color-paper-2: #e7dfd0;
-  --color-ink: #1c1915;
-  --color-ink-soft: #4f4a41;
-  --color-line: #d5ccba;
-  --color-accent: #b5521f;
-  --color-accent-ink: #fff7ee;
-  --color-code: #171512;
-  --color-code-muted: #9a9084;
-  --color-code-kw: #e08a55;
-  --color-code-str: #8fb58a;
-  --color-code-fn: #d4b56a;
-  --color-ok: #2f6f4e;
-  --color-err: #a33b2b;
+  --color-paper: #ffffff;
+  --color-paper-2: #e4eef0;
+  --color-ink: #0a2f39;
+  --color-ink-soft: #135d71;
+  --color-line: #c8e1e4;
+  --color-accent: #ffbf0f;
+  --color-accent-ink: #0a2f39;
+  --color-hero: #0a2f39;
+  --color-hero-fg: #e4eef0;
+  --color-code: #08242b;
+  --color-code-muted: #67a7b6;
+  --color-code-kw: #9ac8d1;
+  --color-code-str: #c8e1e4;
+  --color-code-fn: #ffed4d;
+  --color-ok: #207588;
+  --color-err: #b42318;
   --radius-sm: 0.5rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.5rem;
@@ -50,14 +52,15 @@ pre,
 }
 
 a:focus-visible,
-button:focus-visible {
+button:focus-visible,
+select:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
 ::selection {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--color-accent);
+  color: var(--color-ink);
 }
 
 a {
@@ -66,5 +69,5 @@ a {
 
 textarea,
 input {
-  caret-color: var(--color-accent);
+  caret-color: var(--color-ink);
 }
