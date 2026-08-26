@@ -3,22 +3,17 @@
 ---
 
 <figure
-  class="overflow-hidden rounded-xl border border-line bg-code text-paper shadow-[0_24px_60px_-28px_rgba(28,25,21,0.55)]"
+  class="overflow-hidden rounded-lg border border-line bg-code text-paper"
   aria-label="getUiState match and exhaustive example"
 >
-  <div class="flex items-center gap-2 border-b border-white/10 px-4 py-3">
-    <span class="size-2.5 rounded-full bg-err" aria-hidden="true"></span>
-    <span class="size-2.5 rounded-full bg-code-fn" aria-hidden="true"></span>
-    <span class="size-2.5 rounded-full bg-ok" aria-hidden="true"></span>
-    <figcaption class="ml-2 font-mono text-xs text-code-muted">
-      book-screen.tsx
-    </figcaption>
-  </div>
+  <figcaption class="border-b border-white/10 px-5 py-3 font-mono text-xs text-code-muted">
+    book-screen.tsx
+  </figcaption>
   <pre
     class="overflow-x-auto p-5 font-mono text-[13px] leading-6 text-paper sm:text-sm"
   ><code><span class="text-code-kw">import</span> {"{"} getUiState {"}"} <span class="text-code-kw">from</span> <span class="text-code-str">"@bearstudio/ui-state"</span>;
 
-<span class="text-code-kw">const</span> ui = <span class="text-code-fn">getUiState</span>((set) =&gt; {"{"} 
+<span class="text-code-kw">const</span> ui = <span class="text-code-fn">getUiState</span>((set) =&gt; {"{"}
   <span class="text-code-kw">if</span> (bookQuery.status === <span class="text-code-str">"pending"</span>) <span class="text-code-kw">return</span> set(<span class="text-code-str">"pending"</span>);
   <span class="text-code-kw">if</span> (bookQuery.status === <span class="text-code-str">"error"</span>) <span class="text-code-kw">return</span> set(<span class="text-code-str">"error"</span>);
   <span class="text-code-kw">return</span> set(<span class="text-code-str">"default"</span>, {"{"} book: bookQuery.data {"}"});
@@ -28,22 +23,4 @@ ui.<span class="text-code-fn">match</span>(<span class="text-code-str">"pending"
   .<span class="text-code-fn">match</span>(<span class="text-code-str">"error"</span>, () =&gt; &lt;&gt;Error&lt;/&gt;)
   .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, (&#123; book &#125;) =&gt; &lt;&gt;&#123;book.title&#125;&lt;/&gt;)
   .<span class="text-code-fn">exhaustive</span>();</code></pre>
-  <ul class="grid gap-px border-t border-white/10 bg-white/10 sm:grid-cols-3">
-    <li class="bg-code p-4">
-      <p class="font-mono text-xs tracking-wide text-code-fn uppercase">
-        pending
-      </p>
-      <div class="mt-3 h-2.5 w-3/4 rounded bg-white/10"></div>
-      <div class="mt-2 h-2.5 w-1/2 rounded bg-white/10"></div>
-    </li>
-    <li class="bg-code p-4">
-      <p class="font-mono text-xs tracking-wide text-err uppercase">error</p>
-      <p class="mt-3 text-sm text-code-muted">Could not load the book.</p>
-    </li>
-    <li class="bg-code p-4">
-      <p class="font-mono text-xs tracking-wide text-ok uppercase">default</p>
-      <p class="mt-3 text-sm font-medium">The Left Hand of Darkness</p>
-      <p class="text-sm text-code-muted">Ursula K. Le Guin</p>
-    </li>
-  </ul>
 </figure>

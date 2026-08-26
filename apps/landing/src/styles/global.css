@@ -18,6 +18,10 @@
   --color-code-fn: #d4b56a;
   --color-ok: #2f6f4e;
   --color-err: #a33b2b;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.5rem;
 }
 
 html {
@@ -40,4 +44,10 @@ code,
 pre,
 .font-mono {
   font-family: var(--font-mono);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
