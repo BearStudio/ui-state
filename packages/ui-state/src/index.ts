@@ -31,6 +31,20 @@ type ExcludeStatus<
   S extends string,
 > = T extends { __status: S } ? never : T;
 
+type SetResult<S extends string, SData> = S extends unknown
+  ? Prettify<
+      { __status: S } & (SData extends Record<string, unknown> ? SData : unknown)
+    >
+  : never;
+
+type GetUiStateSet = <
+  S extends AvailableStatus,
+  SData extends Record<string, unknown> | undefined = undefined,
+>(
+  status: S,
+  data?: SData,
+) => SetResult<S, SData>;
+
 type MatchResult<Rest extends { __status: string }> = {
   nonExhaustive: () => React.ReactNode;
 } & ([Rest] extends [never]
@@ -69,23 +83,15 @@ type UiState<T extends { __status: AvailableStatus }> = {
 };
 
 export const getUiState = <T extends { __status: AvailableStatus }>(
-  getState: (
-    set: <
-      S extends AvailableStatus,
-      SData extends Record<string, unknown> = Record<string, never>,
-    >(
-      status: S,
-      data?: SData,
-    ) => Prettify<{ __status: S } & SData>,
-  ) => T,
+  getState: (set: GetUiStateSet) => T,
 ): UiState<T> => {
   const state = Object.freeze(
-    getState((status, data = {} as ExplicitAny) => {
+    getState(((status, data = {} as ExplicitAny) => {
       return {
         __status: status,
         ...data,
       };
-    }),
+    }) as GetUiStateSet),
   );
 
   const isMatching = (status: T["__status"]): boolean =>

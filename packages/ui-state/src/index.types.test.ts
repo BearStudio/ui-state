@@ -67,3 +67,20 @@ describe("getUiState types", () => {
     rest.match("error", () => null);
   });
 });
+
+describe("getUiState from set() with a status union", () => {
+  const status = "test" as "test" | "default";
+  const ui = getUiState((set) => set(status));
+
+  it("splits set(status) into a discriminated state", () => {
+    expectTypeOf(ui.state).toEqualTypeOf<
+      { __status: "test" } | { __status: "default" }
+    >();
+  });
+
+  it("exhaustive() is callable when the union is covered", () => {
+    const done = ui.match("test", () => "t").match("default", () => "d");
+    expectTypeOf(done.exhaustive).toEqualTypeOf<() => ReactNode>();
+    expect(done.exhaustive()).toBe("t");
+  });
+});

@@ -143,6 +143,18 @@ describe("getUiState", () => {
       expect(result).toBe("Error occurred");
     });
 
+    it("should match and exhaustive from set() with a status union", () => {
+      const status = "error" as "pending" | "error" | "success";
+
+      const result = getUiState((set) => set(status))
+        .match("pending", () => "Loading")
+        .match("error", () => "Error")
+        .match("success", () => "OK")
+        .exhaustive();
+
+      expect(result).toBe("Error");
+    });
+
     it("should pass data to handler", () => {
       const status = "default" as "pending" | "error" | "default";
       const ui = getUiState((set) => {
