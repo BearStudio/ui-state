@@ -58,7 +58,7 @@ export function StateDemo() {
               className={
                 selected
                   ? "min-h-11 rounded-lg bg-ink px-3 font-mono text-sm text-paper"
-                  : "min-h-11 rounded-lg border border-line bg-paper px-3 font-mono text-sm text-ink"
+                  : "min-h-11 rounded-lg border border-line bg-paper px-3 font-mono text-sm text-ink hover:border-ink"
               }
             >
               {control.label}
@@ -69,13 +69,9 @@ export function StateDemo() {
       <div className="min-h-[4.75rem] border-t border-line p-5">
         {ui
           .match("pending", () => (
-            <article className="relative" aria-busy="true" aria-live="polite">
-              <div className="h-7 w-3/4 max-w-80 rounded-lg bg-paper-2" />
-              <div className="mt-1 h-5 w-40 rounded-lg bg-paper-2" />
-              <span
-                className="absolute top-1.5 right-0 inline-block size-4 animate-spin rounded-full border-2 border-line border-t-accent motion-reduce:animate-none"
-                aria-hidden="true"
-              />
+            <article aria-busy="true" aria-live="polite">
+              <div className="h-7 w-3/4 max-w-80 rounded-lg bg-paper-2 motion-safe:animate-pulse" />
+              <div className="mt-1 h-5 w-40 rounded-lg bg-paper-2 motion-safe:animate-pulse" />
               {pendingLabel ? (
                 <p className="sr-only">{pendingLabel}</p>
               ) : null}
