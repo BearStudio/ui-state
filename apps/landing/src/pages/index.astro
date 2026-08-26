@@ -57,11 +57,8 @@ const install = "pnpm add @bearstudio/ui-state";
     <section class="mx-auto max-w-6xl px-4 pt-16 pb-12 sm:pt-24 sm:pb-16">
       <div class="grid items-start gap-10 lg:grid-cols-12 lg:gap-16">
         <div class="lg:col-span-5">
-          <p class="max-w-[36ch] text-sm text-accent">
-            Miss a status, tsc fails.
-          </p>
           <h1
-            class="mt-3 text-4xl font-medium tracking-tight text-balance sm:text-5xl"
+            class="text-4xl font-medium tracking-tight text-balance sm:text-5xl"
           >
             UI states you can exhaust.
           </h1>
@@ -118,7 +115,7 @@ const install = "pnpm add @bearstudio/ui-state";
           <code class="font-mono text-ink">@bearstudio/ui-state</code>. Flip pending, error,
           and default. Each view is a
           <code class="font-mono text-ink">match</code> branch; the chain ends
-          with <code class="font-mono text-ink">exhaustive()</code>.
+          with <code class="font-mono text-ink">exhaustive()</code> — a type check, not a runtime type guard.
         </p>
         <div class="mt-8 max-w-xl">
           <StateDemo client:visible />
@@ -154,6 +151,13 @@ const install = "pnpm add @bearstudio/ui-state";
               renders that status and returns null otherwise. Use
               <code class="font-mono text-ink">match</code> when you want the
               full set.
+            </dd>
+          </div>
+          <div class="border-t border-line border-b py-5">
+            <dt class="font-medium">React as a peer</dt>
+            <dd class="mt-1 text-ink-soft">
+              One function. No store, no context, no extra runtime. Wire it to
+              TanStack Query, fetch, or flags you already have.
             </dd>
           </div>
         </dl>
