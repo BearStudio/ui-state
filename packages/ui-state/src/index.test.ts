@@ -24,6 +24,26 @@ describe("getUiState", () => {
     });
   });
 
+  describe("from a status string", () => {
+    it("should create a UI state from a status string", () => {
+      const ui = getUiState("pending");
+
+      expect(ui.state.__status).toBe("pending");
+    });
+
+    it("should match and exhaustive from a status union", () => {
+      const status = "error" as "pending" | "error" | "success";
+
+      const result = getUiState(status)
+        .match("pending", () => "Loading")
+        .match("error", () => "Error")
+        .match("success", () => "OK")
+        .exhaustive();
+
+      expect(result).toBe("Error");
+    });
+  });
+
   describe("is() method", () => {
     it("should return true when status matches", () => {
       const ui = getUiState((set) => set("pending"));

@@ -59,6 +59,10 @@ type MatchResult<Rest extends { __status: string }> = {
       match: UiState<Rest>["match"];
     });
 
+type SplitStatus<S extends string> = S extends unknown
+  ? { __status: S }
+  : never;
+
 type UiState<T extends { __status: AvailableStatus }> = {
   is: <S extends T["__status"]>(
     status: S,
@@ -82,28 +86,21 @@ type UiState<T extends { __status: AvailableStatus }> = {
   ) => MatchResult<ExcludeStatus<T, S>>;
 };
 
-export const getUiState = <T extends { __status: AvailableStatus }>(
-  getState: (set: GetUiStateSet) => T,
+const createUiState = <T extends { __status: AvailableStatus }>(
+  state: T,
 ): UiState<T> => {
-  const state = Object.freeze(
-    getState(((status, data = {} as ExplicitAny) => {
-      return {
-        __status: status,
-        ...data,
-      };
-    }) as GetUiStateSet),
-  );
+  const frozenState = Object.freeze(state);
 
   const isMatching = (status: T["__status"]): boolean =>
-    status === state.__status;
+    status === frozenState.__status;
 
   const isMatchingArray = (status: Array<T["__status"]>): boolean =>
-    status.includes(state.__status);
+    status.includes(frozenState.__status);
 
   const uiState: UiState<T> = {
-    state,
+    state: frozenState,
     is: ((status: T["__status"]) => {
-      return state.__status === status;
+      return frozenState.__status === status;
     }) as UiState<T>["is"],
     when: (status, handler) => {
       if (
@@ -111,7 +108,7 @@ export const getUiState = <T extends { __status: AvailableStatus }>(
           ? isMatching(status)
           : isMatchingArray(status)
       ) {
-        return handler(state as ExplicitAny);
+        return handler(frozenState as ExplicitAny);
       }
       return null;
     },
@@ -125,9 +122,10 @@ export const getUiState = <T extends { __status: AvailableStatus }>(
           : isMatchingArray(status))
       ) {
         return {
-          exhaustive: () => handler(state as ExplicitAny) as React.ReactNode,
+          exhaustive: () =>
+            handler(frozenState as ExplicitAny) as React.ReactNode,
           nonExhaustive: () =>
-            handler(state as ExplicitAny) as React.ReactNode,
+            handler(frozenState as ExplicitAny) as React.ReactNode,
           match: (nextStatus: ExplicitAny, nextHandler: ExplicitAny) =>
             uiState.match(nextStatus, nextHandler, true, () =>
               handler(uiState.state as ExplicitAny),
@@ -146,3 +144,26 @@ export const getUiState = <T extends { __status: AvailableStatus }>(
 
   return uiState;
 };
+
+export function getUiState<S extends string>(
+  status: S,
+): UiState<SplitStatus<S>>;
+export function getUiState<T extends { __status: AvailableStatus }>(
+  getState: (set: GetUiStateSet) => T,
+): UiState<T>;
+export function getUiState(
+  statusOrGetState:
+    | string
+    | ((set: GetUiStateSet) => { __status: AvailableStatus }),
+): UiState<{ __status: AvailableStatus }> {
+  if (typeof statusOrGetState === "string") {
+    return createUiState({ __status: statusOrGetState });
+  }
+
+  return createUiState(
+    statusOrGetState(((status, data = {} as ExplicitAny) => ({
+      __status: status,
+      ...data,
+    })) as GetUiStateSet),
+  );
+}
