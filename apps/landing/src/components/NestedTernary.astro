@@ -1,0 +1,14 @@
+---
+// Static “before” sample. Braces escaped so Astro does not evaluate them.
+---
+<pre
+  class="overflow-x-auto rounded-xl border border-line bg-code p-5 font-mono text-[13px] leading-6 text-code-muted"
+><code><span class="text-code-kw">return</span> isLoading ? (
+  &lt;Spinner /&gt;
+) : error ? (
+  &lt;Error /&gt;
+) : data ? (
+  &lt;Book book={"{ "}data{"} "} /&gt;
+) : (
+  &lt;Empty /&gt;
+);</code></pre>

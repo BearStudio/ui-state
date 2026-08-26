@@ -1,0 +1,31 @@
+---
+// Static product UI — zero JS. Intended LCP: the match + exhaustive sample.
+---
+
+<figure
+  class="overflow-hidden rounded-xl border border-line bg-code text-paper shadow-[0_24px_60px_-28px_rgba(28,25,21,0.55)]"
+  aria-label="getUiState match and exhaustive example"
+>
+  <div class="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+    <span class="size-2.5 rounded-full bg-err" aria-hidden="true"></span>
+    <span class="size-2.5 rounded-full bg-code-fn" aria-hidden="true"></span>
+    <span class="size-2.5 rounded-full bg-ok" aria-hidden="true"></span>
+    <figcaption class="ml-2 font-mono text-xs text-code-muted">
+      book-screen.tsx
+    </figcaption>
+  </div>
+  <pre
+    class="overflow-x-auto p-5 font-mono text-[13px] leading-6 text-paper sm:text-sm"
+  ><code><span class="text-code-kw">import</span> {"{"} getUiState {"}"} <span class="text-code-kw">from</span> <span class="text-code-str">"@bearstudio/ui-state"</span>;
+
+<span class="text-code-kw">const</span> ui = <span class="text-code-fn">getUiState</span>((set) =&gt; {"{"} 
+  <span class="text-code-kw">if</span> (bookQuery.status === <span class="text-code-str">"pending"</span>) <span class="text-code-kw">return</span> set(<span class="text-code-str">"pending"</span>);
+  <span class="text-code-kw">if</span> (bookQuery.status === <span class="text-code-str">"error"</span>) <span class="text-code-kw">return</span> set(<span class="text-code-str">"error"</span>);
+  <span class="text-code-kw">return</span> set(<span class="text-code-str">"default"</span>, {"{"} book: bookQuery.data {"}"});
+{"}"});
+
+ui.<span class="text-code-fn">match</span>(<span class="text-code-str">"pending"</span>, () =&gt; &lt;&gt;Loading...&lt;/&gt;)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"error"</span>, () =&gt; &lt;&gt;Error&lt;/&gt;)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, ({"{ "} book {"} "}) =&gt; &lt;&gt;{"{ "}book.title{"} "}&lt;/&gt;)
+  .<span class="text-code-fn">exhaustive</span>();</code></pre>
+</figure>
