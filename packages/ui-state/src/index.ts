@@ -9,7 +9,7 @@ type AvailableStatus =
   | "default"
   | (string & {}); // Allows extra status
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 type ExplicitAny = any;
 
 type UiStateError<Message extends string> = null | {

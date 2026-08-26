@@ -1,25 +1,11 @@
 {
   "name": "ui-state",
   "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types",
-    "publish-packages": "turbo run build lint test && changeset version && changeset publish",
-    "test": "turbo run test"
+  "homepage": "https://github.com/bearstudio/ui-state#readme",
+  "bugs": {
+    "url": "https://github.com/bearstudio/ui-state/issues"
   },
-  "devDependencies": {
-    "@changesets/cli": "2.29.4",
-    "prettier": "3.5.3",
-    "turbo": "2.5.3",
-    "typescript": "5.8.2"
-  },
-  "packageManager": "pnpm@9.0.0",
-  "engines": {
-    "node": ">=18"
-  },
+  "license": "MIT",
   "contributors": [
     {
       "name": "Hugo Perard",
@@ -42,9 +28,26 @@
       "url": "https://github.com/ivan-dalmet"
     }
   ],
-  "bugs": {
-    "url": "https://github.com/bearstudio/ui-state/issues"
+  "scripts": {
+    "build": "oxlint && turbo run check-types build",
+    "dev": "turbo run dev",
+    "lint": "oxlint",
+    "format": "oxfmt",
+    "check-types": "turbo run check-types",
+    "publish-packages": "turbo run build check-types test && oxlint && changeset version && changeset publish",
+    "test": "turbo run test",
+    "format:check": "oxfmt --check"
   },
-  "homepage": "https://github.com/bearstudio/ui-state#readme",
-  "license": "MIT"
+  "devDependencies": {
+    "@changesets/cli": "3.0.1",
+    "oxfmt": "0.65.0",
+    "oxlint": "1.80.0",
+    "oxlint-tsgolint": "7.0.2001",
+    "turbo": "2.10.12",
+    "typescript": "7.0.2"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@10.34.5"
 }

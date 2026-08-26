@@ -149,7 +149,7 @@ describe("getUiState", () => {
     });
 
     it("should pass data to handler", () => {
-      // eslint-disable-next-line prefer-const
+      // oxlint-disable-next-line prefer-const
       let status = "default";
       const ui = getUiState((set) => {
         if (status === "pending") {
@@ -173,7 +173,7 @@ describe("getUiState", () => {
     });
 
     it("should chain multiple matches correctly", () => {
-      // eslint-disable-next-line prefer-const
+      // oxlint-disable-next-line prefer-const
       let status = "empty";
       const ui = getUiState((set) => {
         if (status === "default") {
@@ -206,7 +206,7 @@ describe("getUiState", () => {
     });
 
     it("should only execute the first matching handler", () => {
-      // eslint-disable-next-line prefer-const
+      // oxlint-disable-next-line prefer-const
       let status = "pending";
       const ui = getUiState((set) => {
         if (status === "default") {
@@ -252,7 +252,7 @@ describe("getUiState", () => {
     });
 
     it("should return null when no status matches", () => {
-      // eslint-disable-next-line prefer-const
+      // oxlint-disable-next-line prefer-const
       let status = "default";
       const ui = getUiState((set) => {
         if (status === "pending") {
@@ -285,7 +285,7 @@ describe("getUiState", () => {
     });
 
     it("should handle array of statuses", () => {
-      // eslint-disable-next-line prefer-const
+      // oxlint-disable-next-line prefer-const
       let status = "not-found";
       const ui = getUiState((set) => {
         if (status === "error") {
@@ -371,7 +371,7 @@ describe("getUiState", () => {
     });
 
     it("should handle match chains with mixed array and single status matches", () => {
-      // eslint-disable-next-line prefer-const
+      // oxlint-disable-next-line prefer-const
       let status = "error";
       const ui = getUiState((set) => {
         if (status === "default") {

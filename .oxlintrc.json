@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "options": {
+    "typeAware": true
+  },
+  "plugins": ["eslint", "typescript", "unicorn", "oxc", "vitest"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error"
+  },
+  "rules": {
+    "eslint/no-underscore-dangle": [
+      "error",
+      { "allow": ["__status", "__error__", "__matched"] }
+    ],
+    "eslint/no-shadow": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "typescript/no-unnecessary-type-parameters": "off",
+    "typescript/no-unsafe-type-assertion": "off",
+    "typescript/no-explicit-any": "off"
+  },
+  "ignorePatterns": ["**/dist/**", "**/coverage/**"]
+}
