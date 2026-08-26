@@ -41,6 +41,12 @@ describe("getUiState types", () => {
     partial.exhaustive();
   });
 
+  it("rejects exhaustive() before any match", () => {
+    expectTypeOf(ui.exhaustive).not.toEqualTypeOf<() => ReactNode>();
+    // @ts-expect-error exhaustive requires a complete match chain
+    ui.exhaustive();
+  });
+
   it("exhaustive() is callable when complete", () => {
     const done = ui.match("error", () => "e").match("default", () => "d");
     expectTypeOf(done.exhaustive).toEqualTypeOf<() => ReactNode>();
@@ -82,5 +88,36 @@ describe("getUiState from set() with a status union", () => {
     const done = ui.match("test", () => "t").match("default", () => "d");
     expectTypeOf(done.exhaustive).toEqualTypeOf<() => ReactNode>();
     expect(done.exhaustive()).toBe("t");
+  });
+});
+
+describe("getUiState empty payload vs data payload", () => {
+  const cond = true as boolean;
+  const book = { title: "Dune" };
+  const ui = getUiState((set) => {
+    if (cond) {
+      return set("pending");
+    }
+    return set("default", { book });
+  });
+
+  it("pending state has no data keys", () => {
+    if (ui.is("pending")) {
+      type Pending = typeof ui.state;
+      type HasBook = "book" extends keyof Pending ? true : false;
+      expectTypeOf<HasBook>().toEqualTypeOf<false>();
+      expectTypeOf(ui.state).toEqualTypeOf<{ __status: "pending" }>();
+      // @ts-expect-error book is not on pending
+      expectTypeOf(ui.state.book).toEqualTypeOf(book);
+    }
+  });
+
+  it("shared match does not expose keys missing from a variant", () => {
+    ui.match(["pending", "default"], (data) => {
+      type HasBook = "book" extends keyof typeof data ? true : false;
+      expectTypeOf<HasBook>().toEqualTypeOf<false>();
+      // @ts-expect-error book is not on pending
+      return data.book;
+    });
   });
 });

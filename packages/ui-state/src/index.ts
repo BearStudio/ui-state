@@ -32,9 +32,9 @@ type ExcludeStatus<
 > = T extends { __status: S } ? never : T;
 
 type SetResult<S extends string, SData> = S extends unknown
-  ? Prettify<
-      { __status: S } & (SData extends Record<string, unknown> ? SData : unknown)
-    >
+  ? [SData] extends [undefined]
+    ? { __status: S }
+    : Prettify<{ __status: S } & SData>
   : never;
 
 type GetUiStateSet = <
@@ -68,8 +68,8 @@ type UiState<T extends { __status: AvailableStatus }> = {
     status: S | Array<S>,
     handler: (data: DataOf<T, S>) => R,
   ) => R | null;
-  exhaustive: () => ExhaustiveError<`\`exhaustive()\` should be use after \`match\``>;
-  nonExhaustive: () => NonExhaustiveError<`\`nonExhaustive()\` should be use after \`match\``>;
+  exhaustive: ExhaustiveError<`\`exhaustive()\` should be use after \`match\``>;
+  nonExhaustive: NonExhaustiveError<`\`nonExhaustive()\` should be use after \`match\``>;
   match: <S extends T["__status"]>(
     status: S | Array<S>,
     handler: (
@@ -115,8 +115,8 @@ export const getUiState = <T extends { __status: AvailableStatus }>(
       }
       return null;
     },
-    nonExhaustive: () => null,
-    exhaustive: () => null,
+    nonExhaustive: (() => null) as ExplicitAny,
+    exhaustive: (() => null) as ExplicitAny,
     match: (status, handler, __matched = false, render = () => null) => {
       if (
         !__matched &&
