@@ -1,5 +1,5 @@
 ---
-// Static product UI — zero JS. Intended LCP: the match + exhaustive sample.
+// Static product UI — zero JS. LCP is this card, not a photo.
 ---
 
 <figure
@@ -26,6 +26,24 @@
 
 ui.<span class="text-code-fn">match</span>(<span class="text-code-str">"pending"</span>, () =&gt; &lt;&gt;Loading...&lt;/&gt;)
   .<span class="text-code-fn">match</span>(<span class="text-code-str">"error"</span>, () =&gt; &lt;&gt;Error&lt;/&gt;)
-  .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, ({"{ "} book {"} "}) =&gt; &lt;&gt;{"{ "}book.title{"} "}&lt;/&gt;)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, ({"{ "}book{"} "}) =&gt; &lt;&gt;{"{ "}book.title{"} "}&lt;/&gt;)
   .<span class="text-code-fn">exhaustive</span>();</code></pre>
+  <ul class="grid gap-px border-t border-white/10 bg-white/10 sm:grid-cols-3">
+    <li class="bg-code p-4">
+      <p class="font-mono text-xs tracking-wide text-code-fn uppercase">
+        pending
+      </p>
+      <div class="mt-3 h-2.5 w-3/4 rounded bg-white/10"></div>
+      <div class="mt-2 h-2.5 w-1/2 rounded bg-white/10"></div>
+    </li>
+    <li class="bg-code p-4">
+      <p class="font-mono text-xs tracking-wide text-err uppercase">error</p>
+      <p class="mt-3 text-sm text-code-muted">Could not load the book.</p>
+    </li>
+    <li class="bg-code p-4">
+      <p class="font-mono text-xs tracking-wide text-ok uppercase">default</p>
+      <p class="mt-3 text-sm font-medium">The Left Hand of Darkness</p>
+      <p class="text-sm text-code-muted">Ursula K. Le Guin</p>
+    </li>
+  </ul>
 </figure>
