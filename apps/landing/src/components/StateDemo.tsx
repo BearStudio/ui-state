@@ -36,45 +36,46 @@ export function StateDemo() {
     [status],
   );
 
-  const pendingLabel = ui.when("pending", () => "Fetching the book");
-
   return (
     <div className="overflow-hidden rounded-lg border border-line bg-paper">
-      <div
-        className="flex flex-wrap gap-2 p-3"
-        role="group"
-        aria-label="Simulated query status"
-      >
-        {CONTROLS.map((control) => {
-          const selected = status === control.id;
-          return (
-            <button
-              key={control.id}
-              type="button"
-              aria-pressed={selected}
-              onClick={() => {
-                setStatus(control.id);
-              }}
-              className={
-                selected
-                  ? "min-h-11 rounded-lg bg-ink px-3 font-mono text-sm text-paper"
-                  : "min-h-11 rounded-lg border border-line bg-paper px-3 font-mono text-sm text-ink hover:border-ink"
-              }
-            >
-              {control.label}
-            </button>
-          );
-        })}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3">
+        <p className="font-mono text-xs text-ink-soft">match + exhaustive</p>
+        <div
+          className="flex flex-wrap gap-2"
+          role="group"
+          aria-label="Simulated query status"
+        >
+          {CONTROLS.map((control) => {
+            const selected = status === control.id;
+            return (
+              <button
+                key={control.id}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => {
+                  setStatus(control.id);
+                }}
+                className={
+                  selected
+                    ? "min-h-11 rounded-lg bg-ink px-3 font-mono text-sm text-paper"
+                    : "min-h-11 rounded-lg border border-line bg-paper px-3 font-mono text-sm text-ink"
+                }
+              >
+                {control.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
-      <div className="min-h-[4.75rem] border-t border-line p-5">
+      <div className="min-h-40 p-5">
         {ui
           .match("pending", () => (
             <article aria-busy="true" aria-live="polite">
-              <div className="h-7 w-3/4 max-w-80 rounded-lg bg-paper-2 motion-safe:animate-pulse" />
-              <div className="mt-1 h-5 w-40 rounded-lg bg-paper-2 motion-safe:animate-pulse" />
-              {pendingLabel ? (
-                <p className="sr-only">{pendingLabel}</p>
-              ) : null}
+              <p className="font-mono text-xs tracking-wide text-ink-soft uppercase">
+                pending
+              </p>
+              <div className="mt-3 h-2.5 w-3/4 rounded-lg bg-paper-2" />
+              <div className="mt-2 h-2.5 w-1/2 rounded-lg bg-paper-2" />
             </article>
           ))
           .match("error", () => (
