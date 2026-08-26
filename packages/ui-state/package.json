@@ -33,7 +33,7 @@
   },
   "scripts": {
     "dev": "tsup src/index.ts --format esm,cjs --watch",
-    "build": "tsup src/index.ts --format esm,cjs --minify && tsc -p tsconfig.build.json",
+    "build": "tsup src/index.ts --format esm,cjs --minify --clean && tsc -p tsconfig.build.json",
     "lint": "oxlint .",
     "check-types": "tsc --noEmit",
     "test": "vitest run",
