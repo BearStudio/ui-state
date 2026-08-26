@@ -136,7 +136,7 @@ export function StateDemo() {
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 rounded-lg border border-accent bg-accent/10"
+          className="pointer-events-none absolute inset-x-0 rounded-lg bg-accent"
           style={{ top: PAD * ITEM_PX, height: ITEM_PX }}
         />
         <div
@@ -156,7 +156,7 @@ export function StateDemo() {
           }}
         >
           <div
-            className="transition-transform duration-300 ease-out motion-reduce:transition-none"
+            className="relative transition-transform duration-300 ease-out motion-reduce:transition-none"
             style={{
               transform: `translateY(${(PAD - selectedIndex) * ITEM_PX}px)`,
             }}
@@ -171,7 +171,7 @@ export function StateDemo() {
                   aria-selected={selected}
                   className={
                     selected
-                      ? "flex h-11 w-full items-center px-3 font-mono text-sm text-accent"
+                      ? "flex h-11 w-full items-center px-3 font-mono text-sm text-ink"
                       : "flex h-11 w-full items-center px-3 font-mono text-sm text-ink-soft"
                   }
                   onClick={() => {
