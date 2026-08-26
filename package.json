@@ -29,7 +29,7 @@
     }
   ],
   "scripts": {
-    "build": "turbo run build",
+    "build": "oxlint && turbo run check-types build",
     "dev": "turbo run dev",
     "lint": "oxlint",
     "format": "oxfmt",
