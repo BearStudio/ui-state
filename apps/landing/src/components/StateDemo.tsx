@@ -57,7 +57,7 @@ export function StateDemo() {
                 }}
                 className={
                   selected
-                    ? "min-h-11 rounded-lg bg-ink px-3 font-mono text-sm text-paper"
+                    ? "min-h-11 rounded-lg bg-accent px-3 font-mono text-sm text-accent-ink"
                     : "min-h-11 rounded-lg border border-line bg-paper px-3 font-mono text-sm text-ink"
                 }
               >
@@ -71,11 +71,9 @@ export function StateDemo() {
         {ui
           .match("pending", () => (
             <article aria-busy="true" aria-live="polite">
-              <p className="font-mono text-xs tracking-wide text-ink-soft uppercase">
-                pending
-              </p>
-              <div className="mt-3 h-2.5 w-3/4 rounded-lg bg-paper-2" />
-              <div className="mt-2 h-2.5 w-1/2 rounded-lg bg-paper-2" />
+              <p className="font-mono text-xs text-ink-soft">pending</p>
+              <div className="mt-3 h-7 w-2/3 max-w-xs rounded-lg bg-paper-2" />
+              <div className="mt-2 h-5 w-1/3 max-w-[10rem] rounded-lg bg-paper-2" />
             </article>
           ))
           .match("error", () => (
