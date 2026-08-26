@@ -11,8 +11,16 @@ export default defineConfig({
   },
   fonts: [
     {
-      name: "IBM Plex Sans",
-      cssVariable: "--font-ibm-plex-sans",
+      name: "Roboto Slab",
+      cssVariable: "--font-roboto-slab",
+      provider: fontProviders.fontsource(),
+      weights: [700],
+      styles: ["normal"],
+      subsets: ["latin", "latin-ext"],
+    },
+    {
+      name: "Inter",
+      cssVariable: "--font-inter",
       provider: fontProviders.fontsource(),
       weights: [400, 500, 600],
       styles: ["normal"],
