@@ -58,4 +58,10 @@ describe("getUiState types", () => {
     // @ts-expect-error pending is not in the union
     expect(ui.is("pending")).toBe(false);
   });
+
+  it("match() rejects a status already matched", () => {
+    const rest = ui.match("error", () => null);
+    // @ts-expect-error error already matched
+    rest.match("error", () => null);
+  });
 });
