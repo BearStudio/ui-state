@@ -1,37 +1,19 @@
 ---
-// Editorial pair: nested ternaries vs match + exhaustive.
-// Braces escaped so Astro does not evaluate them.
+// The sell: exhaustive() is a type error until every status is matched.
 ---
 
-<div class="grid gap-6 lg:grid-cols-2 lg:gap-10">
-  <figure>
-    <figcaption class="mb-3 font-mono text-xs text-ink-soft">
-      Nested ternaries
-    </figcaption>
-    <pre
-      class="overflow-x-auto rounded-lg border border-line bg-paper p-5 font-mono text-[13px] leading-6 text-ink-soft"
-    ><code><span class="text-ink">return</span> isLoading ? (
-  &lt;Spinner /&gt;
-) : error ? (
-  &lt;Error /&gt;
-) : data ? (
-  &lt;Book book={"{ "}data{"} "} /&gt;
-) : (
-  &lt;Empty /&gt;
-);</code></pre>
-  </figure>
-  <figure>
-    <figcaption class="mb-3 font-mono text-xs text-accent">
-      match + exhaustive
-    </figcaption>
-    <pre
-      class="overflow-x-auto rounded-lg border border-line bg-code p-5 font-mono text-[13px] leading-6 text-paper"
-    ><code>ui.<span class="text-code-fn">match</span>(<span class="text-code-str">"pending"</span>, () =&gt; &lt;Spinner /&gt;)
-  .<span class="text-code-fn">match</span>(<span class="text-code-str">"error"</span>, () =&gt; &lt;Error /&gt;)
-  .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, (&#123; book &#125;) =&gt;
-    &lt;Book book=&#123;book&#125; /&gt;,
-  )
-  .<span class="text-code-fn">match</span>(<span class="text-code-str">"empty"</span>, () =&gt; &lt;Empty /&gt;)
-  .<span class="text-code-fn">exhaustive</span>();</code></pre>
-  </figure>
-</div>
+<figure>
+  <figcaption class="mb-3 font-mono text-xs text-accent">
+    tsc
+  </figcaption>
+  <pre
+    class="overflow-x-auto rounded-lg border border-line bg-code p-5 font-mono text-[13px] leading-6 text-paper"
+  ><code><span class="text-code-muted">book-screen.tsx:14:6 - error TS2349</span>
+This expression is not callable.
+  Type <span class="text-code-str">'Unmatched&lt;"empty"&gt;'</span> has no call signatures.
+
+  12   .match(<span class="text-code-str">"default"</span>, (&#123; book &#125;) =&gt; &lt;Book book=&#123;book&#125; /&gt;)
+  13   .match(<span class="text-code-str">"error"</span>, () =&gt; &lt;Error /&gt;)
+  14   .exhaustive()
+        <span class="text-accent">~~~~~~~~~~</span></code></pre>
+</figure>
