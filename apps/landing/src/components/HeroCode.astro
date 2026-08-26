@@ -1,44 +1,43 @@
 ---
-// Static product UI — zero JS. LCP is this card, not a photo.
+// With the helper: match + exhaustive. Miss a status, tsc fails.
 ---
 
-<figure
-  class="overflow-hidden rounded-lg border border-line bg-code text-paper"
-  aria-label="getUiState match and exhaustive example"
->
-  <figcaption class="border-b border-white/10 px-5 py-3 font-mono text-xs text-code-muted">
-    book-screen.tsx
-  </figcaption>
-  <pre
-    class="overflow-x-auto p-5 font-mono text-[13px] leading-6 text-paper sm:text-sm"
-  ><code><span class="text-code-kw">import</span> {"{"} getUiState {"}"} <span class="text-code-kw">from</span> <span class="text-code-str">"@bearstudio/ui-state"</span>;
-
-<span class="text-code-kw">const</span> ui = <span class="text-code-fn">getUiState</span>((set) => {"{"}
+<div class="space-y-6">
+  <figure
+    class="overflow-hidden rounded-lg border border-line bg-code text-paper"
+    aria-label="getUiState match and exhaustive example"
+  >
+    <figcaption class="border-b border-white/10 px-5 py-3 font-mono text-xs text-code-muted">
+      With
+    </figcaption>
+    <pre
+      class="overflow-x-auto p-5 font-mono text-[13px] leading-6 text-paper sm:text-sm"
+    ><code><span class="text-code-kw">const</span> ui = <span class="text-code-fn">getUiState</span>((set) => {"{"} 
   <span class="text-code-kw">if</span> (bookQuery.status === <span class="text-code-str">"pending"</span>) <span class="text-code-kw">return</span> set(<span class="text-code-str">"pending"</span>);
   <span class="text-code-kw">if</span> (bookQuery.status === <span class="text-code-str">"error"</span>) <span class="text-code-kw">return</span> set(<span class="text-code-str">"error"</span>);
+  <span class="text-code-kw">if</span> (!bookQuery.data) <span class="text-code-kw">return</span> set(<span class="text-code-str">"empty"</span>);
   <span class="text-code-kw">return</span> set(<span class="text-code-str">"default"</span>, {"{"} book: bookQuery.data {"}"});
-{"}"});
+{"} "});
 
-ui.<span class="text-code-fn">match</span>(<span class="text-code-str">"pending"</span>, () => &lt;&gt;Loading...&lt;/&gt;)
-  .<span class="text-code-fn">match</span>(<span class="text-code-str">"error"</span>, () => &lt;&gt;Error&lt;/&gt;)
-  .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, (&#123; book &#125;) => &lt;&gt;&#123;book.title&#125;&lt;/&gt;)
+ui.<span class="text-code-fn">match</span>(<span class="text-code-str">"pending"</span>, () => &lt;Loading /&gt;)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"error"</span>, () => &lt;Error /&gt;)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, (&#123; book &#125;) => &lt;Book book=&#123;book&#125; /&gt;)
   .<span class="text-code-fn">exhaustive</span>();</code></pre>
-  <ul class="grid gap-px border-t border-white/10 bg-white/10 sm:grid-cols-3">
-    <li class="bg-code p-4">
-      <p class="font-mono text-xs tracking-wide text-code-fn uppercase">
-        pending
-      </p>
-      <div class="mt-3 h-2.5 w-3/4 rounded bg-white/10"></div>
-      <div class="mt-2 h-2.5 w-1/2 rounded bg-white/10"></div>
-    </li>
-    <li class="bg-code p-4">
-      <p class="font-mono text-xs tracking-wide text-err uppercase">error</p>
-      <p class="mt-3 text-sm text-code-muted">Could not load the book.</p>
-    </li>
-    <li class="bg-code p-4">
-      <p class="font-mono text-xs tracking-wide text-ok uppercase">default</p>
-      <p class="mt-3 text-sm font-medium">The Left Hand of Darkness</p>
-      <p class="text-sm text-code-muted">Ursula K. Le Guin</p>
-    </li>
-  </ul>
-</figure>
+  </figure>
+
+  <figure>
+    <figcaption class="mb-3 font-mono text-xs text-accent">
+      tsc
+    </figcaption>
+    <pre
+      class="overflow-x-auto rounded-lg border border-line bg-code p-5 font-mono text-[13px] leading-6 text-paper"
+    ><code><span class="text-code-muted">book-screen.tsx:14:6 - error TS2349</span>
+This expression is not callable.
+  Type <span class="text-code-str">'Unmatched&lt;"empty"&gt;'</span> has no call signatures.
+
+  12   .match(<span class="text-code-str">"default"</span>, (&#123; book &#125;) =&gt; &lt;Book book=&#123;book&#125; /&gt;)
+  13   .match(<span class="text-code-str">"error"</span>, () =&gt; &lt;Error /&gt;)
+  14   .exhaustive()
+        <span class="text-accent">~~~~~~~~~~</span></code></pre>
+  </figure>
+</div>
