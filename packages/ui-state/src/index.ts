@@ -19,6 +19,8 @@ type UiStateError<Message extends string> = null | {
 type NonExhaustiveError<Message extends string = ""> = UiStateError<Message>;
 type ExhaustiveError<Message extends string = ""> = UiStateError<Message>;
 
+type Prettify<T> = { [K in keyof T]: T[K] } & {};
+
 type DataOf<
   T extends { __status: string },
   S extends T["__status"],
@@ -74,7 +76,7 @@ export const getUiState = <T extends { __status: AvailableStatus }>(
     >(
       status: S,
       data?: SData,
-    ) => { __status: S } & SData,
+    ) => Prettify<{ __status: S } & SData>,
   ) => T,
 ): UiState<T> => {
   const state = Object.freeze(
@@ -120,11 +122,11 @@ export const getUiState = <T extends { __status: AvailableStatus }>(
           exhaustive: () => handler(state as ExplicitAny) as React.ReactNode,
           nonExhaustive: () =>
             handler(state as ExplicitAny) as React.ReactNode,
-          match: (nextStatus, nextHandler) =>
+          match: (nextStatus: ExplicitAny, nextHandler: ExplicitAny) =>
             uiState.match(nextStatus, nextHandler, true, () =>
               handler(uiState.state as ExplicitAny),
             ),
-        };
+        } as ExplicitAny;
       }
 
       return {

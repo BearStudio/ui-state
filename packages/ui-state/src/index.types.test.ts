@@ -1,4 +1,5 @@
 import { describe, it, expectTypeOf, expect } from "vitest";
+import type { ReactNode } from "react";
 import { getUiState } from "./index.js";
 
 describe("getUiState types", () => {
@@ -41,7 +42,7 @@ describe("getUiState types", () => {
 
   it("exhaustive() is callable when complete", () => {
     const done = ui.match("error", () => "e").match("default", () => "d");
-    expectTypeOf(done.exhaustive).toEqualTypeOf<() => import("react").ReactNode>();
+    expectTypeOf(done.exhaustive).toEqualTypeOf<() => ReactNode>();
     expect(done.exhaustive()).toBe("e");
   });
 
