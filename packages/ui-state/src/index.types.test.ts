@@ -22,7 +22,7 @@ describe("getUiState types", () => {
     if (ui.is("error")) {
       expectTypeOf(ui.state.message).toEqualTypeOf<string>();
       // @ts-expect-error title is not on error
-      expect(ui.state.title).toBeUndefined();
+      expectTypeOf(ui.state.title).toEqualTypeOf<string>();
     }
   });
 
@@ -30,12 +30,13 @@ describe("getUiState types", () => {
     if (ui.state.__status === "default") {
       expectTypeOf(ui.state.title).toEqualTypeOf<string>();
       // @ts-expect-error message is not on default
-      expect(ui.state.message).toBeUndefined();
+      expectTypeOf(ui.state.message).toEqualTypeOf<string>();
     }
   });
 
   it("exhaustive() is not callable while statuses remain", () => {
     const partial = ui.match("error", () => null);
+    expectTypeOf(partial.exhaustive).not.toEqualTypeOf<() => ReactNode>();
     // @ts-expect-error default is missing
     partial.exhaustive();
   });
@@ -61,6 +62,7 @@ describe("getUiState types", () => {
 
   it("match() rejects a status already matched", () => {
     const rest = ui.match("error", () => null);
+    expectTypeOf(rest.match).toBeCallableWith("default", () => null);
     // @ts-expect-error error already matched
     rest.match("error", () => null);
   });

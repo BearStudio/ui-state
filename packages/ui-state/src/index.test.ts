@@ -304,15 +304,17 @@ describe("getUiState", () => {
 
       const errorUi = createUiState("error");
       expect(errorUi.is("error")).toBe(true);
-      if (errorUi.is("error")) {
-        expect(errorUi.state.message).toBe("Something went wrong");
-      }
+      expect(errorUi.state).toEqual({
+        __status: "error",
+        message: "Something went wrong",
+      });
 
       const successUi = createUiState("success");
       expect(successUi.is("default")).toBe(true);
-      if (successUi.is("default")) {
-        expect(successUi.state.data).toBe("Success!");
-      }
+      expect(successUi.state).toEqual({
+        __status: "default",
+        data: "Success!",
+      });
     });
 
     it("should handle empty data object", () => {
