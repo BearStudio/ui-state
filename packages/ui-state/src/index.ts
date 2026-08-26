@@ -19,66 +19,64 @@ type UiStateError<Message extends string> = null | {
 type NonExhaustiveError<Message extends string = ""> = UiStateError<Message>;
 type ExhaustiveError<Message extends string = ""> = UiStateError<Message>;
 
-type UiState<
-  Status extends AvailableStatus,
-  Data extends Record<string, unknown>,
-> = {
-  is: <S extends Status>(status: S) => boolean;
-  state: {
-    __status: Status;
-  } & Data;
-  when: <
-    S extends Status,
-    R = React.ReactNode,
-    SData = Omit<
-      Extract<UiState<Status, Data>["state"], { __status: S }>,
-      "__status"
-    >,
-  >(
+type DataOf<
+  T extends { __status: string },
+  S extends T["__status"],
+> = T extends { __status: S } ? Omit<T, "__status"> : never;
+
+type ExcludeStatus<
+  T extends { __status: string },
+  S extends string,
+> = T extends { __status: S } ? never : T;
+
+type MatchResult<Rest extends { __status: string }> = {
+  nonExhaustive: () => React.ReactNode;
+} & ([Rest] extends [never]
+  ? {
+      exhaustive: () => React.ReactNode;
+      match: (
+        error: ExhaustiveError<"All status are already matched">,
+      ) => ExhaustiveError<"All status are already matched">;
+    }
+  : {
+      exhaustive: ExhaustiveError<`${Rest["__status"]} is missing to use \`exhaustive()\``>;
+      match: UiState<Rest>["match"];
+    });
+
+type UiState<T extends { __status: AvailableStatus }> = {
+  is: <S extends T["__status"]>(
+    status: S,
+  ) => this is UiState<Extract<T, { __status: S }>>;
+  state: T;
+  when: <S extends T["__status"], R = React.ReactNode>(
     status: S | Array<S>,
-    handler: (data: SData) => R,
+    handler: (data: DataOf<T, S>) => R,
   ) => R | null;
   exhaustive: () => ExhaustiveError<`\`exhaustive()\` should be use after \`match\``>;
   nonExhaustive: () => NonExhaustiveError<`\`nonExhaustive()\` should be use after \`match\``>;
-  match: <
-    S extends Status,
-    SData = Omit<
-      Extract<UiState<Status, Data>["state"], { __status: S }>,
-      "__status"
-    >,
-  >(
+  match: <S extends T["__status"]>(
     status: S | Array<S>,
     handler: (
-      data: SData,
+      data: DataOf<T, S>,
     ) => React.ReactNode | ((...args: ExplicitAny[]) => React.ReactNode),
     __matched?: boolean,
     render?: () =>
       | React.ReactNode
       | ((...args: ExplicitAny[]) => React.ReactNode),
-  ) => {
-    nonExhaustive: () => React.ReactNode;
-  } & (Exclude<Status, S> extends never
-    ? {
-        exhaustive: () => React.ReactNode;
-        match: () => ExhaustiveError<"All status are already matched">;
-      }
-    : {
-        exhaustive: () => ExhaustiveError<`${Exclude<Status, S>} is missing to use \`exhaustive()\``>;
-        match: UiState<Exclude<Status, S>, Data>["match"];
-      });
+  ) => MatchResult<ExcludeStatus<T, S>>;
 };
 
-export const getUiState = <
-  Status extends AvailableStatus,
-  Data extends Record<string, unknown>,
->(
+export const getUiState = <T extends { __status: AvailableStatus }>(
   getState: (
-    set: <S extends AvailableStatus, SData extends Record<string, unknown>>(
+    set: <
+      S extends AvailableStatus,
+      SData extends Record<string, unknown> = Record<string, never>,
+    >(
       status: S,
       data?: SData,
     ) => { __status: S } & SData,
-  ) => { __status: Status } & Data,
-): UiState<Status, Data> => {
+  ) => T,
+): UiState<T> => {
   const state = Object.freeze(
     getState((status, data = {} as ExplicitAny) => {
       return {
@@ -88,23 +86,22 @@ export const getUiState = <
     }),
   );
 
-  const isMatching = <S extends Status>(status: Status): status is S =>
+  const isMatching = (status: T["__status"]): boolean =>
     status === state.__status;
 
-  const isMatchingArray = <S extends Status>(
-    status: Array<Status>,
-  ): status is Array<S> => status.includes(state.__status);
+  const isMatchingArray = (status: Array<T["__status"]>): boolean =>
+    status.includes(state.__status);
 
-  const uiState: UiState<Status, Data> = {
+  const uiState: UiState<T> = {
     state,
-    is: (status) => {
+    is: ((status: T["__status"]) => {
       return state.__status === status;
-    },
+    }) as UiState<T>["is"],
     when: (status, handler) => {
       if (
         typeof status === "string"
           ? isMatching(status)
-          : isMatchingArray(status as Array<Status>)
+          : isMatchingArray(status)
       ) {
         return handler(state as ExplicitAny);
       }
@@ -117,13 +114,14 @@ export const getUiState = <
         !__matched &&
         (typeof status === "string"
           ? isMatching(status)
-          : isMatchingArray(status as Array<Status>))
+          : isMatchingArray(status))
       ) {
         return {
           exhaustive: () => handler(state as ExplicitAny) as React.ReactNode,
-          nonExhaustive: () => handler(state as ExplicitAny) as React.ReactNode,
-          match: (status, _handler) =>
-            uiState.match(status, _handler, true, () =>
+          nonExhaustive: () =>
+            handler(state as ExplicitAny) as React.ReactNode,
+          match: (nextStatus, nextHandler) =>
+            uiState.match(nextStatus, nextHandler, true, () =>
               handler(uiState.state as ExplicitAny),
             ),
         };
@@ -132,8 +130,8 @@ export const getUiState = <
       return {
         exhaustive: () => render() as React.ReactNode,
         nonExhaustive: () => render() as React.ReactNode,
-        match: (status: Status, handler: ExplicitAny) =>
-          uiState.match(status, handler, __matched, render),
+        match: (nextStatus: T["__status"], nextHandler: ExplicitAny) =>
+          uiState.match(nextStatus, nextHandler, __matched, render),
       } as ExplicitAny;
     },
   };
