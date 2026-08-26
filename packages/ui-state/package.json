@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@bearstudio/typescript-config": "workspace:*",
-    "@types/node": "22.20.1",
+    "@types/node": "24.13.3",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.5",
     "@vitest/ui": "4.1.11",
