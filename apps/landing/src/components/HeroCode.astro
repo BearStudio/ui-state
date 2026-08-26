@@ -1,14 +1,20 @@
 ---
-// One sample: incomplete match + the tsc miss. No getUiState dump.
+// Same screen as NestedTernary, with empty on the chain.
 ---
 
 <pre
-  class="overflow-x-auto rounded-lg border border-line bg-code p-5 font-mono text-[13px] leading-6 text-paper sm:text-sm"
-><code>ui.<span class="text-code-fn">match</span>(<span class="text-code-str">"pending"</span>, () => &lt;Loading /&gt;)
-  .<span class="text-code-fn">match</span>(<span class="text-code-str">"error"</span>, () => &lt;Error /&gt;)
-  .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, (&#123; book &#125;) => &lt;Book book=&#123;book&#125; /&gt;)
-  .<span class="text-code-fn">exhaustive</span>()
-        <span class="text-accent">~~~~~~~~~~</span>
+  class="h-full min-h-60 w-full min-w-0 flex-1 overflow-x-auto rounded-lg border border-line bg-code p-4 font-mono text-[13px] leading-6 text-paper sm:text-sm"
+><code><span class="text-code-kw">const</span> ui = <span class="text-code-fn">getUiState</span>((set) => &#123;
+  <span class="text-code-kw">if</span> (query.isPending) <span class="text-code-kw">return</span> <span class="text-code-fn">set</span>(<span class="text-code-str">"pending"</span>);
+  <span class="text-code-kw">if</span> (query.isError) <span class="text-code-kw">return</span> <span class="text-code-fn">set</span>(<span class="text-code-str">"error"</span>);
+  <span class="text-code-kw">if</span> (!query.data) <span class="text-code-kw">return</span> <span class="text-code-fn">set</span>(<span class="text-code-str">"empty"</span>);
+  <span class="text-code-kw">return</span> <span class="text-code-fn">set</span>(<span class="text-code-str">"default"</span>, &#123; bear: query.data &#125;);
+&#125;);
 
-<span class="text-code-muted">error TS2349</span>
-Type <span class="text-code-str">'Unmatched&lt;"empty"&gt;'</span> has no call signatures.</code></pre>
+ui.<span class="text-code-fn">match</span>(<span class="text-code-str">"pending"</span>, () => &lt;Loading /&gt;)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"error"</span>, () => &lt;Error /&gt;)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"empty"</span>, () => &lt;Empty /&gt;)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, (&#123; bear &#125;) => (
+    &lt;Bear bear=&#123;bear&#125; /&gt;
+  ))
+  .<span class="text-code-fn">exhaustive</span>()</code></pre>

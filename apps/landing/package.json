@@ -1,8 +1,8 @@
 {
   "name": "landing",
   "private": true,
-  "type": "module",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

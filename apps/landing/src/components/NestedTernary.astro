@@ -1,13 +1,20 @@
 ---
-// Nested ternaries still typecheck when empty is missing.
+// Nested ternaries still typecheck when a later status is missing.
 ---
 
 <pre
-  class="overflow-x-auto rounded-lg border border-line bg-paper p-5 font-mono text-[13px] leading-6 text-ink-soft sm:text-sm"
-><code><span class="text-ink">return</span> isPending ? (
+  class="h-full min-h-60 w-full min-w-0 flex-1 overflow-x-auto rounded-lg border border-line bg-paper p-4 font-mono text-[13px] leading-6 text-ink-soft sm:text-sm"
+><code><span class="text-ink">const</span> isPending = query.isPending;
+<span class="text-ink">const</span> isError = query.isError;
+<span class="text-ink">const</span> data = query.data;
+<span class="text-ink">const</span> isEmpty = !data;
+
+<span class="text-ink">return</span> isPending ? (
   &lt;Loading /&gt;
 ) : isError ? (
   &lt;Error /&gt;
+) : isEmpty ? (
+  &lt;Empty /&gt;
 ) : data ? (
-  &lt;Book book=&#123;data&#125; /&gt;
+  &lt;Bear bear=&#123;data&#125; /&gt;
 ) : <span class="text-ink">null</span>;</code></pre>

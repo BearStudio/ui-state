@@ -2,48 +2,34 @@
 import Layout from "../layouts/Layout.astro";
 import HeroCode from "../components/HeroCode.astro";
 import NestedTernary from "../components/NestedTernary.astro";
+import { CopyCommand } from "../components/CopyCommand.tsx";
 import { StateDemo } from "../components/StateDemo.tsx";
 
 const title = "@bearstudio/ui-state — exhaustive UI states for React";
 const description =
   "A small TypeScript helper that maps pending, error, and custom statuses onto match + exhaustive(). Miss a status, tsc fails.";
 const github = "https://github.com/BearStudio/ui-state";
+const article = "https://www.bearstudio.fr/en/blog/posts/why-did-we-create-ui-state";
 const install = "pnpm add @bearstudio/ui-state";
 ---
 
 <Layout title={title} description={description}>
   <header class="bg-hero text-hero-fg">
     <div
-      class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3"
+      class="mx-auto flex max-w-4xl items-center justify-between gap-2 px-4 py-3 sm:gap-4"
     >
       <a
         href="/"
-        class="inline-flex min-h-11 items-center font-mono text-sm font-medium text-hero-fg"
+        class="inline-flex min-h-11 min-w-0 items-center font-mono text-xs font-medium text-hero-fg sm:text-sm"
       >
         @bearstudio/ui-state
       </a>
-      <nav aria-label="Primary">
-        <ul class="flex items-center gap-1 text-sm">
-          <li>
-            <a
-              href="#compare"
-              class="inline-flex min-h-11 items-center px-2 text-hero-fg/80 hover:text-accent"
-            >
-              Compare
-            </a>
-          </li>
-          <li>
-            <a
-              href="#demo"
-              class="inline-flex min-h-11 items-center px-2 text-hero-fg/80 hover:text-accent"
-            >
-              Demo
-            </a>
-          </li>
+      <nav aria-label="Primary" class="shrink-0">
+        <ul class="flex items-center gap-0.5 text-sm sm:gap-1">
           <li>
             <a
               href={github}
-              class="inline-flex min-h-11 items-center px-2 text-hero-fg/80 hover:text-accent"
+              class="inline-flex min-h-11 items-center px-1.5 text-hero-fg/80 hover:text-accent sm:px-2"
             >
               GitHub
             </a>
@@ -58,35 +44,59 @@ const install = "pnpm add @bearstudio/ui-state";
       >
         UI states you can exhaust.
       </h1>
+      <p class="mx-auto mt-5 max-w-3xl text-lg text-hero-fg/80 sm:text-xl">
+        Map every display condition onto one match chain.<br />
+        <span class="sm:whitespace-nowrap">
+          Cleaner render, better comprehension. Miss a case, TypeScript fails.
+        </span>
+      </p>
       <div class="mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
-        <pre
-          class="m-0 overflow-x-auto rounded-lg border border-hero-fg/20 bg-code px-4 py-2.5 text-left font-mono text-sm text-hero-fg"
-        ><code>{install}</code></pre>
+        <CopyCommand client:load command={install} />
         <a href={github} class="text-sm text-hero-fg/80 hover:text-accent">
           GitHub
         </a>
       </div>
+      <p class="mt-8">
+        <a
+          href={article}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-sm font-medium text-hero-fg/80 hover:text-accent"
+        >
+          See why did we create ui-state
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+      </p>
     </section>
   </header>
 
   <main id="main">
-    <section id="compare" class="bg-paper-2">
-      <div class="mx-auto max-w-6xl px-4 py-20">
-        <h2 class="text-2xl font-medium">Same screen, with and without.</h2>
-        <p class="mt-3 max-w-[50ch] text-ink-soft">
-          <code class="font-mono text-ink">getUiState</code> maps pending,
-          error, and the statuses you actually have onto one
-          <code class="font-mono text-ink">match</code> chain. Nested ternaries
-          swallow empty and still typecheck.
-          <code class="font-mono text-ink">exhaustive()</code> does not.
-        </p>
-        <div class="mt-10 grid items-start gap-8 lg:grid-cols-2">
-          <div>
-            <h3 class="mb-3 font-mono text-sm text-ink-soft">Without</h3>
+    <section id="compare">
+      <div class="mx-auto w-full min-w-0 max-w-4xl px-4 py-20">
+        <h2 class="sr-only">Compare</h2>
+        <div class="grid min-w-0 items-stretch gap-6 lg:grid-cols-2">
+          <div class="flex min-h-0 min-w-0 flex-col">
+            <h3 class="mb-2 font-mono text-sm text-ink-soft">Before</h3>
             <NestedTernary />
           </div>
-          <div>
-            <h3 class="mb-3 font-mono text-sm text-ink">With</h3>
+          <div class="flex min-h-0 min-w-0 flex-col">
+            <h3 class="mb-2 font-mono text-sm text-ink">After</h3>
             <HeroCode />
           </div>
         </div>
@@ -94,71 +104,29 @@ const install = "pnpm add @bearstudio/ui-state";
     </section>
 
     <section id="demo" class="border-t border-line">
-      <div class="mx-auto max-w-6xl px-4 py-20">
-        <h2 class="text-2xl font-medium">The package, running.</h2>
+      <div class="mx-auto w-full min-w-0 max-w-4xl px-4 py-20">
+        <h2 class="text-2xl font-medium">Fully custom statuses.</h2>
         <p class="mt-3 max-w-xl text-ink-soft">
-          Spin a custom status. The view next to it is the matching
-          <code class="font-mono text-ink">match</code> branch; the chain still
-          ends with <code class="font-mono text-ink">exhaustive()</code>.
+          Not a fixed list of loading and error. You name every status the UI
+          needs; each one is a <code class="font-mono text-ink">match</code>
+          branch you own. Miss one,
+          <code class="font-mono text-ink">exhaustive()</code> fails.
         </p>
-        <div class="mt-10 max-w-3xl">
+        <div class="mt-10 min-w-0 max-w-3xl">
           <StateDemo client:visible />
         </div>
-      </div>
-    </section>
-
-    <section class="border-t border-line bg-paper-2">
-      <div class="mx-auto max-w-6xl px-4 py-20">
-        <h2 class="text-2xl font-medium">What you get</h2>
-        <dl class="mt-10 max-w-xl space-y-8">
-          <div>
-            <dt class="font-medium">
-              <code class="font-mono">exhaustive()</code>
-            </dt>
-            <dd class="mt-2 text-ink-soft">
-              Does not type-check until every inferred status has a
-              <code class="font-mono text-ink">match</code>. A new status is a
-              compile error, not a blank screen.
-            </dd>
-          </div>
-          <div>
-            <dt class="font-medium">Your statuses, not a fixed enum</dt>
-            <dd class="mt-2 text-ink-soft">
-              pending, error, default, empty, not-found, or
-              <code class="font-mono text-ink">show-input</code>. The helper
-              infers the union from <code class="font-mono text-ink">set()</code>.
-            </dd>
-          </div>
-          <div>
-            <dt class="font-medium">Payload per status</dt>
-            <dd class="mt-2 text-ink-soft">
-              <code class="font-mono text-ink">set("default", {"{"} book {"}"})</code>
-              carries data on that branch. pending does not need a fake book.
-            </dd>
-          </div>
-        </dl>
-      </div>
-    </section>
-
-    <section id="install" class="border-t border-line">
-      <div class="mx-auto max-w-6xl px-4 py-20">
-        <h2 class="text-2xl font-medium">Install</h2>
-        <pre
-          class="mt-6 inline-block overflow-x-auto rounded-lg border border-line bg-paper-2 px-4 py-3 font-mono text-sm"
-        ><code>{install}</code></pre>
-        <p class="mt-4">
-          <a href={github} class="text-sm text-ink-soft hover:text-ink">GitHub</a>
-        </p>
       </div>
     </section>
   </main>
 
   <footer class="border-t border-line">
     <div
-      class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-sm text-ink-soft"
+      class="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-sm text-ink-soft"
     >
       <p>MIT · BearStudio</p>
       <p>
+        <a href={article} class="hover:text-ink">Why we built this</a>
+        <span aria-hidden="true"> · </span>
         <a href={github} class="hover:text-ink">GitHub</a>
         <span aria-hidden="true"> · </span>
         <a href="https://www.bearstudio.fr" class="hover:text-ink">bearstudio.fr</a>

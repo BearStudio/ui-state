@@ -1,36 +1,21 @@
 import { useMemo, useState } from "react";
 import { getUiState } from "@bearstudio/ui-state";
+import { BearMascot, type BearMood } from "./BearMascot";
+import OptionWheel from "./OptionWheel";
 
-type DemoStatus =
-  | "pending"
-  | "error"
-  | "empty"
-  | "not-found"
-  | "show-input"
-  | "success";
+type DemoStatus = "pending" | "error" | "empty" | "not-found" | "success";
 
-type Book = {
-  title: string;
-  author: string;
-};
-
-const DEMO_BOOK: Book = {
-  title: "The Left Hand of Darkness",
-  author: "Ursula K. Le Guin",
-};
-
-const STATUSES: ReadonlyArray<{ id: DemoStatus; label: string }> = [
-  { id: "pending", label: "pending" },
-  { id: "error", label: "error" },
-  { id: "empty", label: "empty" },
-  { id: "not-found", label: "not-found" },
-  { id: "show-input", label: "show-input" },
-  { id: "success", label: "default" },
+const STATUSES: ReadonlyArray<{
+  id: DemoStatus;
+  label: string;
+  mood: BearMood;
+}> = [
+  { id: "pending", label: "loading bear", mood: "loading" },
+  { id: "error", label: "sad bear", mood: "sad" },
+  { id: "empty", label: "empty bear", mood: "empty" },
+  { id: "not-found", label: "lost bear", mood: "lost" },
+  { id: "success", label: "happy bear", mood: "happy" },
 ];
-
-const ITEM_PX = 44;
-const WINDOW = 5;
-const PAD = 2;
 
 function isDemoStatus(value: string): value is DemoStatus {
   return STATUSES.some((item) => item.id === value);
@@ -55,62 +40,14 @@ export function StateDemo() {
         if (status === "not-found") {
           return set("not-found");
         }
-        if (status === "show-input") {
-          return set("show-input");
-        }
-        return set("default", { book: DEMO_BOOK });
+        return set("default");
       }),
     [status],
   );
 
-  function step(delta: number) {
-    const next = Math.min(
-      STATUSES.length - 1,
-      Math.max(0, selectedIndex + delta),
-    );
-    const item = STATUSES[next];
-    if (item) {
-      setStatus(item.id);
-    }
-  }
-
-  const view = ui
-    .match("pending", () => (
-      <article aria-busy="true" aria-live="polite">
-        <p className="font-mono text-xs text-ink-soft">pending</p>
-        <div className="mt-3 h-7 w-2/3 max-w-xs rounded-lg bg-paper-2" />
-        <div className="mt-2 h-5 w-1/3 max-w-[10rem] rounded-lg bg-paper-2" />
-      </article>
-    ))
-    .match("error", () => (
-      <p className="text-err">Could not load the book.</p>
-    ))
-    .match("empty", () => (
-      <p className="text-ink-soft">No books on this shelf.</p>
-    ))
-    .match("not-found", () => (
-      <p className="text-ink-soft">That book is not in the catalogue.</p>
-    ))
-    .match("show-input", () => (
-      <label className="block max-w-xs">
-        <span className="font-mono text-xs text-ink-soft">search</span>
-        <input
-          className="mt-2 min-h-11 w-full rounded-lg border border-line bg-paper px-3 text-sm"
-          placeholder="Search the catalogue"
-        />
-      </label>
-    ))
-    .match("default", ({ book }) => (
-      <article>
-        <h3 className="text-xl font-medium">{book.title}</h3>
-        <p className="mt-1 text-ink-soft">{book.author}</p>
-      </article>
-    ))
-    .exhaustive();
-
   return (
-    <div className="grid items-center gap-8 sm:grid-cols-2">
-      <label className="hidden motion-reduce:block">
+    <div className="min-w-0">
+      <label className="hidden motion-reduce:mb-6 motion-reduce:block">
         <span className="font-mono text-xs text-ink-soft">status</span>
         <select
           className="mt-2 min-h-11 w-full rounded-lg border border-line bg-paper px-3 font-mono text-sm"
@@ -130,63 +67,59 @@ export function StateDemo() {
         </select>
       </label>
 
-      <div
-        className="relative motion-reduce:hidden"
-        style={{ height: WINDOW * ITEM_PX }}
-      >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 rounded-lg bg-accent"
-          style={{ top: PAD * ITEM_PX, height: ITEM_PX }}
-        />
-        <div
-          role="listbox"
-          aria-label="UI status"
-          tabIndex={0}
-          className="h-full overflow-hidden"
-          onKeyDown={(event) => {
-            if (event.key === "ArrowDown") {
-              event.preventDefault();
-              step(1);
-            }
-            if (event.key === "ArrowUp") {
-              event.preventDefault();
-              step(-1);
-            }
-          }}
-        >
-          <div
-            className="relative transition-transform duration-300 ease-out motion-reduce:transition-none"
-            style={{
-              transform: `translateY(${(PAD - selectedIndex) * ITEM_PX}px)`,
+      <div className="flex min-w-0 items-center gap-6 sm:gap-10">
+        <div className="relative h-32 w-40 shrink-0 motion-reduce:hidden sm:h-48 sm:w-48">
+          <OptionWheel
+            items={STATUSES.map((item) => item.label)}
+            defaultSelected={selectedIndex}
+            textColor="#135d71"
+            activeColor="#0a2f39"
+            side="left"
+            fontSize={1.2}
+            spacing={1.6}
+            curve={0.05}
+            tilt={0}
+            blur={0.3}
+            fade={0.2}
+            smoothing={100}
+            inset={0}
+            loop
+            draggable
+            soundUrl="/sounds/click-soft.wav"
+            soundVolume={0.65}
+            className="font-mono focus-visible:ring-2 focus-visible:ring-accent"
+            onChange={(index) => {
+              const item = STATUSES[index];
+              if (item) {
+                setStatus(item.id);
+              }
             }}
-          >
-            {STATUSES.map((item) => {
-              const selected = item.id === status;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  role="option"
-                  aria-selected={selected}
-                  className={
-                    selected
-                      ? "flex h-11 w-full items-center px-3 font-mono text-sm text-ink"
-                      : "flex h-11 w-full items-center px-3 font-mono text-sm text-ink-soft"
-                  }
-                  onClick={() => {
-                    setStatus(item.id);
-                  }}
-                >
-                  {item.label}
-                </button>
-              );
-            })}
-          </div>
+          />
+        </div>
+        <div
+          aria-busy={ui.is("pending")}
+          aria-live="polite"
+          className="flex min-h-48 max-w-48 flex-1 shrink-0 items-center justify-center"
+        >
+          {ui
+            .match("pending", () => (
+              <BearMascot mood="loading" className="size-28 sm:size-32" />
+            ))
+            .match("error", () => (
+              <BearMascot mood="sad" className="size-28 sm:size-32" />
+            ))
+            .match("empty", () => (
+              <BearMascot mood="empty" className="size-28 sm:size-32" />
+            ))
+            .match("not-found", () => (
+              <BearMascot mood="lost" className="size-28 sm:size-32" />
+            ))
+            .match("default", () => (
+              <BearMascot mood="happy" className="size-28 sm:size-32" />
+            ))
+            .exhaustive()}
         </div>
       </div>
-
-      <div className="min-h-40">{view}</div>
     </div>
   );
 }
