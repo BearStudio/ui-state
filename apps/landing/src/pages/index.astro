@@ -4,11 +4,11 @@ import HeroCode from "../components/HeroCode.astro";
 import NestedTernary from "../components/NestedTernary.astro";
 import { StateDemo } from "../components/StateDemo.tsx";
 
-const title = '@bearstudio/ui-state — exhaustive UI states for React';
+const title = "@bearstudio/ui-state — exhaustive UI states for React";
 const description =
-  'A small TypeScript helper that maps pending, error, and custom statuses onto match + exhaustive(). Miss a status, tsc fails.';
-const github = 'https://github.com/BearStudio/ui-state';
-const install = 'pnpm add @bearstudio/ui-state';
+  "A small TypeScript helper that maps pending, error, and custom statuses onto match + exhaustive(). Miss a status, tsc fails.";
+const github = "https://github.com/BearStudio/ui-state";
+const install = "pnpm add @bearstudio/ui-state";
 ---
 
 <Layout title={title} description={description}>
@@ -54,11 +54,14 @@ const install = 'pnpm add @bearstudio/ui-state';
   </header>
 
   <main id="main">
-    <section class="mx-auto max-w-6xl px-4 py-16 sm:py-24">
-      <div class="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
+    <section class="mx-auto max-w-6xl px-4 pt-16 pb-12 sm:pt-24 sm:pb-16">
+      <div class="grid items-start gap-10 lg:grid-cols-12 lg:gap-16">
         <div class="lg:col-span-5">
+          <p class="max-w-[36ch] text-sm text-accent">
+            Miss a status, tsc fails.
+          </p>
           <h1
-            class="text-4xl font-medium tracking-tight text-balance sm:text-5xl"
+            class="mt-3 text-4xl font-medium tracking-tight text-balance sm:text-5xl"
           >
             UI states you can exhaust.
           </h1>
@@ -70,15 +73,17 @@ const install = 'pnpm add @bearstudio/ui-state';
             a type error until every status has a branch. For React screens that
             already know if a query is loading — not a new store.
           </p>
-          <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
-            <a
-              href="#install"
-              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-accent px-5 text-sm font-medium text-accent-ink"
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <p
+              class="inline-flex min-h-11 max-w-full items-center overflow-x-auto rounded-lg bg-ink px-5 font-mono text-sm text-paper"
             >
-              Install
-            </a>
-            <a href={github} class="text-sm text-ink-soft hover:text-ink">
-              GitHub
+              {install}
+            </p>
+            <a
+              href={github}
+              class="inline-flex min-h-11 items-center text-sm text-ink-soft hover:text-ink"
+            >
+              Source on GitHub
             </a>
           </div>
         </div>
@@ -89,66 +94,62 @@ const install = 'pnpm add @bearstudio/ui-state';
     </section>
 
     <section class="border-t border-line bg-paper-2">
-      <div class="mx-auto max-w-6xl px-4 py-20">
-        <h2 class="max-w-xl text-2xl font-medium">
-          Nested ternaries do not scale.
-        </h2>
-        <p class="mt-3 max-w-xl text-ink-soft">
-          Loading, error, data. Then empty. Then not-found. Each new status is
-          another branch to paste into every screen. Miss one and the UI still
-          typechecks.
-        </p>
-        <div class="mt-10">
+      <div class="mx-auto max-w-6xl px-4 py-24 sm:py-32">
+        <div class="max-w-xl">
+          <h2 class="text-2xl font-medium">Nested ternaries do not scale.</h2>
+          <p class="mt-3 text-ink-soft">
+            Loading, error, data. Then empty. Then not-found. Each new status
+            is another branch to paste into every screen. Miss one and the UI
+            still typechecks.
+          </p>
+        </div>
+        <div class="mt-8">
           <NestedTernary />
         </div>
       </div>
     </section>
 
     <section id="demo" class="border-t border-line">
-      <div class="mx-auto max-w-6xl px-4 py-20">
+      <div class="mx-auto max-w-6xl px-4 py-24 sm:py-32">
         <h2 class="text-2xl font-medium">The package, running.</h2>
         <p class="mt-3 max-w-xl text-ink-soft">
           This island hydrates on view and calls
           <code class="font-mono text-ink">getUiState</code> from
-          <code class="font-mono text-ink">@bearstudio/ui-state</code>. Flip
-          pending, error, and default. Each view is a
+          <code class="font-mono text-ink">@bearstudio/ui-state</code>. Flip pending, error,
+          and default. Each view is a
           <code class="font-mono text-ink">match</code> branch; the chain ends
           with <code class="font-mono text-ink">exhaustive()</code>.
         </p>
-        <div class="mt-8 max-w-2xl">
+        <div class="mt-8 max-w-xl">
           <StateDemo client:visible />
         </div>
       </div>
     </section>
 
-    <section class="border-t border-line bg-paper-2">
-      <div class="mx-auto max-w-6xl px-4 py-20">
+    <section class="border-t border-line">
+      <div class="mx-auto max-w-6xl px-4 py-24 sm:py-32">
         <h2 class="text-2xl font-medium">What you get</h2>
-        <dl class="mt-10 max-w-xl space-y-8">
-          <div>
-            <dt class="font-medium">
-              <code class="font-mono">exhaustive()</code>
-            </dt>
-            <dd class="mt-2 text-ink-soft">
-              Does not type-check until every inferred status has a
+        <dl class="mt-8 max-w-xl">
+          <div class="border-t border-line py-5">
+            <dt class="font-mono text-sm">exhaustive()</dt>
+            <dd class="mt-1 text-ink-soft">
+              A type error until every status from
+              <code class="font-mono text-ink">set()</code> has a
               <code class="font-mono text-ink">match</code>. A new status is a
               compile error, not a blank screen.
             </dd>
           </div>
-          <div>
-            <dt class="font-medium">Your statuses, with a payload</dt>
-            <dd class="mt-2 text-ink-soft">
-              pending, error, empty, not-found, or
-              <code class="font-mono text-ink">show-input</code> —
-              <code class="font-mono text-ink">set()</code> infers the union.
-              Data lives on the branch that needs it.
+          <div class="border-t border-line py-5">
+            <dt class="font-mono text-sm">set()</dt>
+            <dd class="mt-1 text-ink-soft">
+              Infers the union — pending, empty, not-found, or
+              <code class="font-mono text-ink">show-input</code>. Payload is
+              optional and typed on that branch.
             </dd>
           </div>
-          <div>
-            <dt class="font-medium">
-              <code class="font-mono">when()</code> for one branch
-            </dt>
-            <dd class="mt-2 text-ink-soft">
+          <div class="border-t border-line py-5">
+            <dt class="font-mono text-sm">when()</dt>
+            <dd class="mt-1 text-ink-soft">
               <code class="font-mono text-ink">ui.when("pending", …)</code>
               renders that status and returns null otherwise. Use
               <code class="font-mono text-ink">match</code> when you want the
@@ -159,16 +160,24 @@ const install = 'pnpm add @bearstudio/ui-state';
       </div>
     </section>
 
-    <section id="install" class="border-t border-line">
-      <div class="mx-auto max-w-6xl px-4 py-20">
+    <section id="install" class="border-t border-line bg-paper-2">
+      <div class="mx-auto max-w-6xl px-4 py-24 sm:py-32">
         <h2 class="text-2xl font-medium">Install</h2>
+        <p class="mt-3 max-w-xl text-ink-soft">
+          Peer React. No store. Wire it to the query status you already have.
+        </p>
         <p
-          class="mt-6 inline-block rounded-lg border border-line bg-paper-2 px-4 py-3 font-mono text-sm"
+          class="mt-8 inline-flex min-h-11 max-w-full items-center overflow-x-auto rounded-lg bg-ink px-5 font-mono text-sm text-paper"
         >
           {install}
         </p>
-        <p class="mt-4 text-sm text-ink-soft">
-          MIT. <a href={github} class="text-ink underline-offset-2 hover:underline">GitHub</a>
+        <p class="mt-4">
+          <a
+            href={github}
+            class="inline-flex min-h-11 items-center text-sm text-ink-soft hover:text-ink"
+          >
+            Source on GitHub
+          </a>
         </p>
       </div>
     </section>
