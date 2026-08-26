@@ -12,13 +12,13 @@ const install = "pnpm add @bearstudio/ui-state";
 ---
 
 <Layout title={title} description={description}>
-  <header class="border-b border-line">
+  <header class="bg-hero text-hero-fg">
     <div
       class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3"
     >
       <a
         href="/"
-        class="inline-flex min-h-11 items-center font-mono text-sm font-medium"
+        class="inline-flex min-h-11 items-center font-mono text-sm font-medium text-hero-fg"
       >
         @bearstudio/ui-state
       </a>
@@ -27,7 +27,7 @@ const install = "pnpm add @bearstudio/ui-state";
           <li>
             <a
               href="#compare"
-              class="inline-flex min-h-11 items-center px-2 text-ink-soft hover:text-ink"
+              class="inline-flex min-h-11 items-center px-2 text-hero-fg/80 hover:text-accent"
             >
               Compare
             </a>
@@ -35,7 +35,7 @@ const install = "pnpm add @bearstudio/ui-state";
           <li>
             <a
               href="#demo"
-              class="inline-flex min-h-11 items-center px-2 text-ink-soft hover:text-ink"
+              class="inline-flex min-h-11 items-center px-2 text-hero-fg/80 hover:text-accent"
             >
               Demo
             </a>
@@ -43,7 +43,7 @@ const install = "pnpm add @bearstudio/ui-state";
           <li>
             <a
               href={github}
-              class="inline-flex min-h-11 items-center px-2 text-ink-soft hover:text-ink"
+              class="inline-flex min-h-11 items-center px-2 text-hero-fg/80 hover:text-accent"
             >
               GitHub
             </a>
@@ -51,27 +51,25 @@ const install = "pnpm add @bearstudio/ui-state";
         </ul>
       </nav>
     </div>
+
+    <section class="mx-auto max-w-3xl px-4 py-20 text-center sm:py-28">
+      <h1
+        class="font-heading text-4xl font-bold tracking-tight text-balance text-accent sm:text-6xl"
+      >
+        UI states you can exhaust.
+      </h1>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+        <pre
+          class="m-0 overflow-x-auto rounded-lg border border-hero-fg/20 bg-code px-4 py-2.5 text-left font-mono text-sm text-hero-fg"
+        ><code>{install}</code></pre>
+        <a href={github} class="text-sm text-hero-fg/80 hover:text-accent">
+          GitHub
+        </a>
+      </div>
+    </section>
   </header>
 
   <main id="main">
-    <section class="border-b border-line">
-      <div class="mx-auto max-w-3xl px-4 py-20 text-center sm:py-28">
-        <h1
-          class="text-4xl font-medium tracking-tight text-balance sm:text-6xl"
-        >
-          UI states you can exhaust.
-        </h1>
-        <div class="mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
-          <pre
-            class="m-0 overflow-x-auto rounded-lg border border-line bg-paper-2 px-4 py-2.5 text-left font-mono text-sm"
-          ><code>{install}</code></pre>
-          <a href={github} class="text-sm text-ink-soft hover:text-ink">
-            GitHub
-          </a>
-        </div>
-      </div>
-    </section>
-
     <section id="compare" class="bg-paper-2">
       <div class="mx-auto max-w-6xl px-4 py-20">
         <h2 class="text-2xl font-medium">Same screen, with and without.</h2>
