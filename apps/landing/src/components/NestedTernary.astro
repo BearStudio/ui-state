@@ -1,19 +1,18 @@
 ---
-// The sell: exhaustive() is a type error until every status is matched.
+// Painful alternative: nested ternaries still typecheck when empty is missing.
 ---
 
 <figure>
-  <figcaption class="mb-3 font-mono text-xs text-accent">
-    tsc
+  <figcaption class="mb-3 font-mono text-xs text-ink-soft">
+    Without
   </figcaption>
   <pre
-    class="overflow-x-auto rounded-lg border border-line bg-code p-5 font-mono text-[13px] leading-6 text-paper"
-  ><code><span class="text-code-muted">book-screen.tsx:14:6 - error TS2349</span>
-This expression is not callable.
-  Type <span class="text-code-str">'Unmatched&lt;"empty"&gt;'</span> has no call signatures.
-
-  12   .match(<span class="text-code-str">"default"</span>, (&#123; book &#125;) =&gt; &lt;Book book=&#123;book&#125; /&gt;)
-  13   .match(<span class="text-code-str">"error"</span>, () =&gt; &lt;Error /&gt;)
-  14   .exhaustive()
-        <span class="text-accent">~~~~~~~~~~</span></code></pre>
+    class="overflow-x-auto rounded-lg border border-line bg-code p-5 font-mono text-[13px] leading-6 text-paper sm:text-sm"
+  ><code><span class="text-code-kw">return</span> isPending ? (
+  &lt;Loading /&gt;
+) : isError ? (
+  &lt;Error /&gt;
+) : data ? (
+  &lt;Book book=&#123;data&#125; /&gt;
+) : <span class="text-code-kw">null</span>;</code></pre>
 </figure>
