@@ -1,18 +1,13 @@
 ---
-// Painful alternative: nested ternaries still typecheck when empty is missing.
+// Nested ternaries still typecheck when empty is missing.
 ---
 
-<figure>
-  <figcaption class="mb-3 font-mono text-xs text-ink-soft">
-    Without
-  </figcaption>
-  <pre
-    class="overflow-x-auto rounded-lg border border-line bg-code p-5 font-mono text-[13px] leading-6 text-paper sm:text-sm"
-  ><code><span class="text-code-kw">return</span> isPending ? (
+<pre
+  class="overflow-x-auto rounded-lg border border-line bg-paper p-5 font-mono text-[13px] leading-6 text-ink-soft sm:text-sm"
+><code><span class="text-ink">return</span> isPending ? (
   &lt;Loading /&gt;
 ) : isError ? (
   &lt;Error /&gt;
 ) : data ? (
   &lt;Book book=&#123;data&#125; /&gt;
-) : <span class="text-code-kw">null</span>;</code></pre>
-</figure>
+) : <span class="text-ink">null</span>;</code></pre>
