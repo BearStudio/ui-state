@@ -17,7 +17,7 @@
   <span class="text-code-kw">if</span> (bookQuery.status === <span class="text-code-str">"error"</span>) <span class="text-code-kw">return</span> set(<span class="text-code-str">"error"</span>);
   <span class="text-code-kw">if</span> (!bookQuery.data) <span class="text-code-kw">return</span> set(<span class="text-code-str">"empty"</span>);
   <span class="text-code-kw">return</span> set(<span class="text-code-str">"default"</span>, {"{"} book: bookQuery.data {"}"});
-{"} "});
+{"} "}{");"}
 
 ui.<span class="text-code-fn">match</span>(<span class="text-code-str">"pending"</span>, () => &lt;Loading /&gt;)
   .<span class="text-code-fn">match</span>(<span class="text-code-str">"error"</span>, () => &lt;Error /&gt;)
