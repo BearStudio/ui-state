@@ -5,8 +5,7 @@ import NestedTernary from "../components/NestedTernary.astro";
 import { StateDemo } from "../components/StateDemo.tsx";
 
 const title = "@bearstudio/ui-state — exhaustive UI states for React";
-const description =
-  "A small TypeScript helper that maps pending, error, and custom statuses onto match + exhaustive(). Miss a status, tsc fails.";
+const description = "A small TypeScript helper that maps pending, error, and custom statuses onto match + exhaustive(). Miss a status, tsc fails.";
 const github = "https://github.com/BearStudio/ui-state";
 const install = "pnpm add @bearstudio/ui-state";
 ---
@@ -16,9 +15,7 @@ const install = "pnpm add @bearstudio/ui-state";
     <div
       class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4"
     >
-      <a href="/" class="font-mono text-sm font-medium"
-        >@bearstudio/ui-state</a
-      >
+      <a href="/" class="font-mono text-sm font-medium">@bearstudio/ui-state</a>
       <nav aria-label="Primary">
         <ul class="flex items-center gap-5 text-sm">
           <li>
@@ -107,8 +104,8 @@ const install = "pnpm add @bearstudio/ui-state";
         <p class="mt-3 max-w-2xl text-ink-soft">
           This island hydrates on view and calls
           <code class="font-mono text-ink">getUiState</code> from
-          <code class="font-mono text-ink">@bearstudio/ui-state</code>. Flip
-          pending, error, and default. Each view is a
+          <code class="font-mono text-ink">@bearstudio/ui-state</code>. Flip pending, error,
+          and default. Each view is a
           <code class="font-mono text-ink">match</code> branch; the chain ends
           with <code class="font-mono text-ink">exhaustive()</code>.
         </p>
@@ -141,7 +138,7 @@ const install = "pnpm add @bearstudio/ui-state";
         <li class="rounded-xl border border-line bg-paper-2 p-5">
           <h3 class="font-medium">Payload per status</h3>
           <p class="mt-2 text-sm text-ink-soft">
-            <code class="font-mono text-ink">set("default", &#123; book &#125;)</code>
+            <code class="font-mono text-ink">set("default", {"{"} book {"}"})</code>
             carries data on that branch. pending does not need a fake book.
           </p>
         </li>
@@ -193,9 +190,7 @@ const install = "pnpm add @bearstudio/ui-state";
       <p>
         <a href={github} class="hover:text-paper">GitHub</a>
         <span aria-hidden="true"> · </span>
-        <a href="https://www.bearstudio.fr" class="hover:text-paper"
-          >bearstudio.fr</a
-        >
+        <a href="https://www.bearstudio.fr" class="hover:text-paper">bearstudio.fr</a>
       </p>
     </div>
   </footer>

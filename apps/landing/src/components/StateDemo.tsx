@@ -79,7 +79,7 @@ export function StateDemo() {
           .match("pending", () => (
             <div className="flex items-center gap-3 text-ink-soft">
               <span
-                className="inline-block size-4 rounded-full border-2 border-line border-t-accent"
+                className="inline-block size-4 animate-spin rounded-full border-2 border-line border-t-accent motion-reduce:animate-none"
                 aria-hidden="true"
               />
               <p>Loading the book…</p>
