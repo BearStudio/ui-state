@@ -71,11 +71,9 @@ const install = "pnpm add @bearstudio/ui-state";
             already know if a query is loading — not a new store.
           </p>
           <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
-            <p
-              class="rounded-lg border border-line bg-paper-2 px-4 py-2.5 font-mono text-sm"
-            >
-              {install}
-            </p>
+            <pre
+              class="m-0 overflow-x-auto rounded-lg border border-line bg-paper-2 px-4 py-2.5 font-mono text-sm"
+            ><code>{install}</code></pre>
             <a href={github} class="text-sm text-ink-soft hover:text-ink">
               GitHub
             </a>
@@ -91,12 +89,13 @@ const install = "pnpm add @bearstudio/ui-state";
       <div class="mx-auto grid max-w-6xl gap-10 px-4 py-20 lg:grid-cols-2 lg:items-start">
         <div>
           <h2 class="text-2xl font-medium">
-            Nested ternaries do not scale.
+            Miss a status, tsc fails.
           </h2>
           <p class="mt-3 text-ink-soft">
             Loading, error, data. Then empty. Then not-found. Each new status is
-            another branch to paste into every screen. Miss one and the UI still
-            typechecks.
+            another branch to paste into every screen. Miss one and a ternary
+            still typechecks. <code class="font-mono text-ink">exhaustive()</code>
+            does not.
           </p>
         </div>
         <NestedTernary />
@@ -156,11 +155,9 @@ const install = "pnpm add @bearstudio/ui-state";
     <section id="install" class="border-t border-line">
       <div class="mx-auto max-w-6xl px-4 py-20">
         <h2 class="text-2xl font-medium">Install</h2>
-        <p
-          class="mt-6 inline-block rounded-lg border border-line bg-paper-2 px-4 py-3 font-mono text-sm"
-        >
-          {install}
-        </p>
+        <pre
+          class="mt-6 inline-block overflow-x-auto rounded-lg border border-line bg-paper-2 px-4 py-3 font-mono text-sm"
+        ><code>{install}</code></pre>
         <p class="mt-4">
           <a href={github} class="text-sm text-ink-soft hover:text-ink">GitHub</a>
         </p>
