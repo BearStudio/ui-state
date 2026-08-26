@@ -26,7 +26,7 @@
 
 ui.<span class="text-code-fn">match</span>(<span class="text-code-str">"pending"</span>, () =&gt; &lt;&gt;Loading...&lt;/&gt;)
   .<span class="text-code-fn">match</span>(<span class="text-code-str">"error"</span>, () =&gt; &lt;&gt;Error&lt;/&gt;)
-  .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, ({"{ "}book{"} "}) =&gt; &lt;&gt;{"{ "}book.title{"} "}&lt;/&gt;)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, (&#123; book &#125;) =&gt; &lt;&gt;&#123;book.title&#125;&lt;/&gt;)
   .<span class="text-code-fn">exhaustive</span>();</code></pre>
   <ul class="grid gap-px border-t border-white/10 bg-white/10 sm:grid-cols-3">
     <li class="bg-code p-4">
