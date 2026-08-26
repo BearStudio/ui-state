@@ -68,8 +68,8 @@ type UiState<T extends { __status: AvailableStatus }> = {
     status: S | Array<S>,
     handler: (data: DataOf<T, S>) => R,
   ) => R | null;
-  exhaustive: ExhaustiveError<`\`exhaustive()\` should be use after \`match\``>;
-  nonExhaustive: NonExhaustiveError<`\`nonExhaustive()\` should be use after \`match\``>;
+  exhaustive: () => ExhaustiveError<`\`exhaustive()\` should be use after \`match\``>;
+  nonExhaustive: () => NonExhaustiveError<`\`nonExhaustive()\` should be use after \`match\``>;
   match: <S extends T["__status"]>(
     status: S | Array<S>,
     handler: (
@@ -115,8 +115,8 @@ export const getUiState = <T extends { __status: AvailableStatus }>(
       }
       return null;
     },
-    nonExhaustive: (() => null) as ExplicitAny,
-    exhaustive: (() => null) as ExplicitAny,
+    nonExhaustive: () => null,
+    exhaustive: () => null,
     match: (status, handler, __matched = false, render = () => null) => {
       if (
         !__matched &&

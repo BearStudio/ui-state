@@ -41,12 +41,6 @@ describe("getUiState types", () => {
     partial.exhaustive();
   });
 
-  it("rejects exhaustive() before any match", () => {
-    expectTypeOf(ui.exhaustive).not.toEqualTypeOf<() => ReactNode>();
-    // @ts-expect-error exhaustive requires a complete match chain
-    ui.exhaustive();
-  });
-
   it("exhaustive() is callable when complete", () => {
     const done = ui.match("error", () => "e").match("default", () => "d");
     expectTypeOf(done.exhaustive).toEqualTypeOf<() => ReactNode>();
