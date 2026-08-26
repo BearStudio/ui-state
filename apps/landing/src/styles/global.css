@@ -26,6 +26,8 @@
 
 html {
   scroll-behavior: smooth;
+  color-scheme: light;
+  accent-color: var(--color-accent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -44,10 +46,25 @@ code,
 pre,
 .font-mono {
   font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+a {
+  text-underline-offset: 0.18em;
+}
+
+textarea,
+input {
+  caret-color: var(--color-accent);
 }
