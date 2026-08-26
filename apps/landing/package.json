@@ -1,0 +1,29 @@
+{
+  "name": "landing",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check-types": "tsc --noEmit",
+    "lint": "oxlint .",
+    "format": "oxfmt"
+  },
+  "dependencies": {
+    "@astrojs/react": "6.0.4",
+    "@bearstudio/ui-state": "workspace:*",
+    "astro": "6.4.8",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@bearstudio/typescript-config": "workspace:*",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2"
+  }
+}

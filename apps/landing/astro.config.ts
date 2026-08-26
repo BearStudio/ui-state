@@ -1,0 +1,30 @@
+import react from "@astrojs/react";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig, fontProviders } from "astro/config";
+
+export default defineConfig({
+  output: "static",
+  integrations: [react()],
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  fonts: [
+    {
+      name: "IBM Plex Sans",
+      cssVariable: "--font-ibm-plex-sans",
+      provider: fontProviders.fontsource(),
+      weights: [400, 500, 600],
+      styles: ["normal"],
+      subsets: ["latin", "latin-ext"],
+    },
+    {
+      name: "IBM Plex Mono",
+      cssVariable: "--font-ibm-plex-mono",
+      provider: fontProviders.fontsource(),
+      weights: [400, 500],
+      styles: ["normal"],
+      subsets: ["latin", "latin-ext"],
+      fallbacks: ["monospace"],
+    },
+  ],
+});
