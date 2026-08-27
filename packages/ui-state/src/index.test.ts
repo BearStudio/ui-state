@@ -68,6 +68,38 @@ describe("getUiState", () => {
       // @ts-expect-error this typings should always break as pending is not defined
       expect(ui.is("pending")).toBe(false);
     });
+
+    it("should return true when status matches one in the array", () => {
+      const status = "pending" as "pending" | "error";
+      const ui = getUiState((set) =>
+        status === "error" ? set("error") : set("pending"),
+      );
+
+      expect(ui.is(["pending", "error"])).toBe(true);
+    });
+
+    it("should return false when status does not match any in the array", () => {
+      const status = "pending" as "pending" | "error" | "default";
+      const ui = getUiState((set) => {
+        if (status === "error") {
+          return set("error");
+        }
+        if (status === "default") {
+          return set("default");
+        }
+        return set("pending");
+      });
+
+      expect(ui.is(["error", "default"])).toBe(false);
+    });
+
+    it("should return false for an empty array", () => {
+      const ui = getUiState((set) => set("pending"));
+
+      const result = ui.is([] as never);
+
+      expect(result).toBe(false);
+    });
   });
 
   describe("when() method", () => {

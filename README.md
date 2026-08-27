@@ -67,13 +67,15 @@ ui.is("default"); // invalid
 #### `is`
 
 ```tsx
-ui.is("pending"); // Return true if state is `pending`, false otherwise
+ui.is("pending"); // true if state is `pending`
+ui.is(["pending", "error"]); // true if state is `pending` or `error`
 ```
 
 #### `when`
 
 ```tsx
 ui.when("pending", () => <>Loading...</>); // Render only when state is `pending`
+ui.when(["pending", "error"], () => <>Wait...</>); // Render when state is `pending` or `error`
 ```
 
 #### `match` + `exhaustive`
