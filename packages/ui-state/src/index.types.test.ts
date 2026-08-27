@@ -60,6 +60,19 @@ describe("getUiState types", () => {
     expect(ui.is("pending")).toBe(false);
   });
 
+  it("is() with an array narrows to the listed variants", () => {
+    if (ui.is(["error"])) {
+      expectTypeOf(ui.state.message).toEqualTypeOf<string>();
+      // @ts-expect-error title is not on error
+      expectTypeOf(ui.state.title).toEqualTypeOf<string>();
+    }
+  });
+
+  it("is() rejects an array with a status outside the union", () => {
+    // @ts-expect-error pending is not in the union
+    expect(ui.is(["error", "pending"])).toBe(true);
+  });
+
   it("match() rejects a status already matched", () => {
     const rest = ui.match("error", () => null);
     expectTypeOf(rest.match).toBeCallableWith("default", () => null);
@@ -82,6 +95,32 @@ describe("getUiState from set() with a status union", () => {
     const done = ui.match("test", () => "t").match("default", () => "d");
     expectTypeOf(done.exhaustive).toEqualTypeOf<() => ReactNode>();
     expect(done.exhaustive()).toBe("t");
+  });
+});
+
+describe("getUiState is() with an array of statuses", () => {
+  const status = "error" as "pending" | "error" | "default";
+  const ui = getUiState((set) => {
+    if (status === "pending") {
+      return set("pending");
+    }
+    if (status === "error") {
+      return set("error", { message: "fail" });
+    }
+    return set("default", { title: "ok" });
+  });
+
+  it("narrows to the listed variants", () => {
+    if (ui.is(["error", "default"])) {
+      expectTypeOf(ui.state).toEqualTypeOf<
+        | { __status: "error"; message: string }
+        | { __status: "default"; title: string }
+      >();
+      type HasPending = "pending" extends typeof ui.state.__status
+        ? true
+        : false;
+      expectTypeOf<HasPending>().toEqualTypeOf<false>();
+    }
   });
 });
 

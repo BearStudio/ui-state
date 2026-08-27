@@ -79,7 +79,7 @@ type UiStateFromInput<T> = [T] extends [(...args: never[]) => unknown]
 
 type UiState<T extends { __status: AvailableStatus }> = {
   is: <S extends T["__status"]>(
-    status: S,
+    status: S | Array<S>,
   ) => this is UiState<Extract<T, { __status: S }>>;
   state: T;
   when: <S extends T["__status"], R = React.ReactNode>(
@@ -111,17 +111,18 @@ const createUiState = <T extends { __status: AvailableStatus }>(
   const isMatchingArray = (status: Array<T["__status"]>): boolean =>
     status.includes(frozenState.__status);
 
+  const isMatchingStatus = (
+    status: T["__status"] | Array<T["__status"]>,
+  ): boolean =>
+    typeof status === "string" ? isMatching(status) : isMatchingArray(status);
+
   const uiState: UiState<T> = {
     state: frozenState,
-    is: ((status: T["__status"]) => {
-      return frozenState.__status === status;
+    is: ((status: T["__status"] | Array<T["__status"]>) => {
+      return isMatchingStatus(status);
     }) as UiState<T>["is"],
     when: (status, handler) => {
-      if (
-        typeof status === "string"
-          ? isMatching(status)
-          : isMatchingArray(status)
-      ) {
+      if (isMatchingStatus(status)) {
         return handler(frozenState as ExplicitAny);
       }
       return null;
@@ -129,12 +130,7 @@ const createUiState = <T extends { __status: AvailableStatus }>(
     nonExhaustive: () => null,
     exhaustive: () => null,
     match: (status, handler, __matched = false, render = () => null) => {
-      if (
-        !__matched &&
-        (typeof status === "string"
-          ? isMatching(status)
-          : isMatchingArray(status))
-      ) {
+      if (!__matched && isMatchingStatus(status)) {
         return {
           exhaustive: () =>
             handler(frozenState as ExplicitAny) as React.ReactNode,
