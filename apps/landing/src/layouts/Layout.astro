@@ -1,5 +1,6 @@
 ---
 import { Font } from "astro:assets";
+import { highlightThemeCss } from "../lib/highlight";
 import "../styles/global.css";
 
 type Props = {
@@ -56,6 +57,7 @@ const jsonLd = {
     <Font cssVariable="--font-roboto-slab" preload />
     <Font cssVariable="--font-inter" preload />
     <Font cssVariable="--font-ibm-plex-mono" />
+    <Fragment set:html={`<style>${highlightThemeCss}</style>`} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="min-h-dvh bg-paper text-ink antialiased">

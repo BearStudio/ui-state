@@ -1,8 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import HeroCode from "../components/HeroCode.astro";
-import NestedTernary from "../components/NestedTernary.astro";
-import { CompareSplit } from "../components/CompareSplit.tsx";
+import CompareCode from "../components/CompareCode.astro";
 import { CopyCommand } from "../components/CopyCommand.tsx";
 import { StateDemo } from "../components/StateDemo.tsx";
 
@@ -89,10 +87,7 @@ const install = "pnpm add @bearstudio/ui-state";
     <section id="compare">
       <div class="mx-auto w-full min-w-0 max-w-4xl px-4 py-20">
         <h2 class="sr-only">Compare</h2>
-        <CompareSplit client:visible>
-          <NestedTernary slot="before" />
-          <HeroCode slot="after" />
-        </CompareSplit>
+        <CompareCode />
 
         <div id="demo" class="mt-12 min-w-0 max-w-3xl">
           <h2 class="font-heading text-2xl font-bold tracking-tight">

@@ -76,3 +76,49 @@ textarea,
 input {
   caret-color: var(--color-ink);
 }
+
+.th-comment {
+  font-style: italic;
+}
+
+#compare pre.th-code {
+  margin: 0;
+  overflow-x: auto;
+  padding-block: 1rem;
+  padding-inline: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5rem;
+  border: 0;
+  border-radius: 0;
+}
+
+#compare pre.th-code code {
+  display: block;
+  min-width: 100%;
+  width: max-content;
+}
+
+#compare .th-line {
+  box-sizing: border-box;
+  min-width: 100%;
+  width: auto;
+  padding-left: 1.25rem;
+  padding-right: 1rem;
+}
+
+#compare .th-line--deleted {
+  background: color-mix(in srgb, var(--th-deleted) 18%, transparent);
+  box-shadow: inset 3px 0 0 var(--th-deleted);
+}
+
+#compare .th-line--inserted {
+  background: color-mix(in srgb, var(--th-inserted) 18%, transparent);
+  box-shadow: inset 3px 0 0 var(--th-inserted);
+}
+
+@media (min-width: 640px) {
+  #compare pre.th-code {
+    font-size: 0.875rem;
+  }
+}
