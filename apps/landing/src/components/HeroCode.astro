@@ -1,20 +1,33 @@
 ---
-// Same screen as NestedTernary, with empty on the chain.
+// Same searchable list as NestedTernary and StateDemo.
 ---
 
 <pre
-  class="h-full min-h-60 w-full min-w-0 flex-1 overflow-x-auto rounded-lg border border-line bg-code p-4 font-mono text-[13px] leading-6 text-paper sm:text-sm"
-><code><span class="text-code-kw">const</span> ui = <span class="text-code-fn">getUiState</span>((set) => &#123;
+  class="min-h-60 w-full min-w-0 flex-1 overflow-x-auto overflow-y-hidden bg-code p-4 font-mono text-[13px] leading-6 text-paper sm:text-sm lg:h-full"
+><code><span class="italic text-code-comment">// The logic that defines every possible UI state.</span>
+<span class="text-code-kw">const</span> ui = <span class="text-code-fn">getUiState</span>((set) => &#123;
   <span class="text-code-kw">if</span> (query.isPending) <span class="text-code-kw">return</span> <span class="text-code-fn">set</span>(<span class="text-code-str">"pending"</span>);
+  <span class="text-code-kw">if</span> (query.isError && query.error.code === <span class="text-code-str">"FORBIDDEN"</span>)
+    <span class="text-code-kw">return</span> <span class="text-code-fn">set</span>(<span class="text-code-str">"forbidden"</span>);
   <span class="text-code-kw">if</span> (query.isError) <span class="text-code-kw">return</span> <span class="text-code-fn">set</span>(<span class="text-code-str">"error"</span>);
-  <span class="text-code-kw">if</span> (!query.data) <span class="text-code-kw">return</span> <span class="text-code-fn">set</span>(<span class="text-code-str">"empty"</span>);
-  <span class="text-code-kw">return</span> <span class="text-code-fn">set</span>(<span class="text-code-str">"default"</span>, &#123; bear: query.data &#125;);
+  <span class="text-code-kw">const</span> bears = query.data;
+  <span class="text-code-kw">if</span> (!bears.length && filters.search)
+    <span class="text-code-kw">return</span> <span class="text-code-fn">set</span>(<span class="text-code-str">"empty-search"</span>, &#123;
+      search: filters.search,
+    &#125;);
+  <span class="text-code-kw">if</span> (!bears.length) <span class="text-code-kw">return</span> <span class="text-code-fn">set</span>(<span class="text-code-str">"empty"</span>);
+  <span class="text-code-kw">return</span> <span class="text-code-fn">set</span>(<span class="text-code-str">"default"</span>, &#123; bears &#125;);
 &#125;);
 
-ui.<span class="text-code-fn">match</span>(<span class="text-code-str">"pending"</span>, () => &lt;Loading /&gt;)
-  .<span class="text-code-fn">match</span>(<span class="text-code-str">"error"</span>, () => &lt;Error /&gt;)
-  .<span class="text-code-fn">match</span>(<span class="text-code-str">"empty"</span>, () => &lt;Empty /&gt;)
-  .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, (&#123; bear &#125;) => (
-    &lt;Bear bear=&#123;bear&#125; /&gt;
+<span class="italic text-code-comment">// Clear render handling for each state, with inferred types.</span>
+ui.<span class="text-code-fn">match</span>(<span class="text-code-str">"pending"</span>, () => <span class="text-code-jsx">&lt;Spinner /&gt;</span>)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"forbidden"</span>, () => <span class="text-code-jsx">&lt;Forbidden /&gt;</span>)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"error"</span>, () => <span class="text-code-jsx">&lt;Error /&gt;</span>)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"empty-search"</span>, (&#123; search &#125;) => (
+    <span class="text-code-jsx">&lt;NoResults search=&#123;search&#125; /&gt;</span>
+  ))
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"empty"</span>, () => <span class="text-code-jsx">&lt;Empty /&gt;</span>)
+  .<span class="text-code-fn">match</span>(<span class="text-code-str">"default"</span>, (&#123; bears &#125;) => (
+    <span class="text-code-jsx">&lt;List bears=&#123;bears&#125; /&gt;</span>
   ))
   .<span class="text-code-fn">exhaustive</span>()</code></pre>

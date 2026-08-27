@@ -15,9 +15,13 @@
   --color-hero-fg: #e4eef0;
   --color-code: #08242b;
   --color-code-muted: #67a7b6;
+  --color-comment: #3d7a4a;
+  --color-code-comment: #8fbc7a;
   --color-code-kw: #9ac8d1;
   --color-code-str: #c8e1e4;
   --color-code-fn: #ffed4d;
+  --color-jsx: #c45c26;
+  --color-code-jsx: #ffb38a;
   --color-ok: #207588;
   --color-err: #b42318;
   --radius-sm: 0.5rem;
@@ -53,7 +57,8 @@ pre,
 
 a:focus-visible,
 button:focus-visible,
-select:focus-visible {
+select:focus-visible,
+input:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }

@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import HeroCode from "../components/HeroCode.astro";
 import NestedTernary from "../components/NestedTernary.astro";
+import { CompareSplit } from "../components/CompareSplit.tsx";
 import { CopyCommand } from "../components/CopyCommand.tsx";
 import { StateDemo } from "../components/StateDemo.tsx";
 
@@ -88,30 +89,18 @@ const install = "pnpm add @bearstudio/ui-state";
     <section id="compare">
       <div class="mx-auto w-full min-w-0 max-w-4xl px-4 py-20">
         <h2 class="sr-only">Compare</h2>
-        <div class="grid min-w-0 items-stretch gap-6 lg:grid-cols-2">
-          <div class="flex min-h-0 min-w-0 flex-col">
-            <h3 class="mb-2 font-mono text-sm text-ink-soft">Before</h3>
-            <NestedTernary />
-          </div>
-          <div class="flex min-h-0 min-w-0 flex-col">
-            <h3 class="mb-2 font-mono text-sm text-ink">After</h3>
-            <HeroCode />
-          </div>
-        </div>
-      </div>
-    </section>
+        <CompareSplit client:visible>
+          <NestedTernary slot="before" />
+          <HeroCode slot="after" />
+        </CompareSplit>
 
-    <section id="demo" class="border-t border-line">
-      <div class="mx-auto w-full min-w-0 max-w-4xl px-4 py-20">
-        <h2 class="text-2xl font-medium">Fully custom statuses.</h2>
-        <p class="mt-3 max-w-xl text-ink-soft">
-          Not a fixed list of loading and error. You name every status the UI
-          needs; each one is a <code class="font-mono text-ink">match</code>
-          branch you own. Miss one,
-          <code class="font-mono text-ink">exhaustive()</code> fails.
-        </p>
-        <div class="mt-10 min-w-0 max-w-3xl">
-          <StateDemo client:visible />
+        <div id="demo" class="mt-12 min-w-0 max-w-3xl">
+          <h2 class="font-heading text-2xl font-bold tracking-tight">
+            Try it!
+          </h2>
+          <div class="mt-6">
+            <StateDemo client:visible />
+          </div>
         </div>
       </div>
     </section>
