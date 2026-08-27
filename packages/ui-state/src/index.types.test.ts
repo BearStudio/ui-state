@@ -116,6 +116,24 @@ describe("getUiState empty payload vs data payload", () => {
   });
 });
 
+describe("getUiState rejects a wide string", () => {
+  it("errors when getUiState() is called with a string", () => {
+    const status = "pending" as string;
+    // @ts-expect-error string cannot be exhaustive
+    const ui = getUiState(status);
+    expect(ui.state.__status).toBe("pending");
+  });
+
+  it("errors when set() is called with a string", () => {
+    const status = "pending" as string;
+    const ui = getUiState((set) =>
+      // @ts-expect-error string cannot be exhaustive
+      set(status),
+    );
+    expect(ui.state.__status).toBe("pending");
+  });
+});
+
 describe("getUiState from a status string", () => {
   const status = "pending" as "pending" | "error" | "success";
   const ui = getUiState(status);

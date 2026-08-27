@@ -18,6 +18,9 @@ type UiStateError<Message extends string> = null | {
 
 type NonExhaustiveError<Message extends string = ""> = UiStateError<Message>;
 type ExhaustiveError<Message extends string = ""> = UiStateError<Message>;
+type ForbidWideString<S extends string> = string extends S
+  ? ExhaustiveError<"`string` cannot be exhaustive. Use a string literal union.">
+  : S;
 
 type Prettify<T> = { [K in keyof T]: T[K] } & {};
 
@@ -41,7 +44,7 @@ type GetUiStateSet = <
   S extends AvailableStatus,
   SData extends Record<string, unknown> | undefined = undefined,
 >(
-  status: S,
+  status: ForbidWideString<S>,
   data?: SData,
 ) => SetResult<S, SData>;
 
@@ -62,6 +65,17 @@ type MatchResult<Rest extends { __status: string }> = {
 type SplitStatus<S extends string> = S extends unknown
   ? { __status: S }
   : never;
+
+type UiStateFromInput<T> = [T] extends [(...args: never[]) => unknown]
+  ? UiState<
+      Extract<
+        ReturnType<Extract<T, (...args: never[]) => unknown>>,
+        { __status: AvailableStatus }
+      >
+    >
+  : [T] extends [string]
+    ? UiState<SplitStatus<T>>
+    : never;
 
 type UiState<T extends { __status: AvailableStatus }> = {
   is: <S extends T["__status"]>(
@@ -145,25 +159,22 @@ const createUiState = <T extends { __status: AvailableStatus }>(
   return uiState;
 };
 
-export function getUiState<S extends string>(
-  status: S,
-): UiState<SplitStatus<S>>;
-export function getUiState<T extends { __status: AvailableStatus }>(
-  getState: (set: GetUiStateSet) => T,
-): UiState<T>;
+export function getUiState<
+  T extends string | ((set: GetUiStateSet) => { __status: AvailableStatus }),
+>(
+  statusOrGetState: T extends string ? ForbidWideString<T> : T,
+): UiStateFromInput<T>;
 export function getUiState(
-  statusOrGetState:
-    | string
-    | ((set: GetUiStateSet) => { __status: AvailableStatus }),
+  statusOrGetState: ExplicitAny,
 ): UiState<{ __status: AvailableStatus }> {
   if (typeof statusOrGetState === "string") {
     return createUiState({ __status: statusOrGetState });
   }
 
   return createUiState(
-    statusOrGetState(((status, data = {} as ExplicitAny) => ({
+    statusOrGetState((status: AvailableStatus, data = {} as ExplicitAny) => ({
       __status: status,
       ...data,
-    })) as GetUiStateSet),
+    })),
   );
 }
