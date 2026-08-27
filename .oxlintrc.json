@@ -16,8 +16,7 @@
     "eslint/no-shadow": "off",
     "unicorn/consistent-function-scoping": "off",
     "typescript/no-unnecessary-type-parameters": "off",
-    "typescript/no-unsafe-type-assertion": "off",
-    "typescript/no-explicit-any": "off"
+    "typescript/no-unsafe-type-assertion": "off"
   },
   "ignorePatterns": ["**/dist/**", "**/coverage/**"]
 }
