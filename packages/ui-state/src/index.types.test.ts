@@ -115,3 +115,48 @@ describe("getUiState empty payload vs data payload", () => {
     });
   });
 });
+
+describe("getUiState rejects a wide string", () => {
+  it("errors when getUiState() is called with a string", () => {
+    const status = "pending" as string;
+    // @ts-expect-error string cannot be exhaustive
+    const ui = getUiState(status);
+    expect(ui.state.__status).toBe("pending");
+  });
+
+  it("errors when set() is called with a string", () => {
+    const status = "pending" as string;
+    const ui = getUiState((set) =>
+      // @ts-expect-error string cannot be exhaustive
+      set(status),
+    );
+    expect(ui.state.__status).toBe("pending");
+  });
+});
+
+describe("getUiState from a status string", () => {
+  const status = "pending" as "pending" | "error" | "success";
+  const ui = getUiState(status);
+
+  it("splits a string union into a discriminated state", () => {
+    expectTypeOf(ui.state).toEqualTypeOf<
+      { __status: "pending" } | { __status: "error" } | { __status: "success" }
+    >();
+  });
+
+  it("exhaustive() is not callable while statuses remain", () => {
+    const partial = ui.match("pending", () => null).match("error", () => null);
+    expectTypeOf(partial.exhaustive).not.toEqualTypeOf<() => ReactNode>();
+    // @ts-expect-error success is missing
+    partial.exhaustive();
+  });
+
+  it("exhaustive() is callable when the union is covered", () => {
+    const done = ui
+      .match("pending", () => "p")
+      .match("error", () => "e")
+      .match("success", () => "s");
+    expectTypeOf(done.exhaustive).toEqualTypeOf<() => ReactNode>();
+    expect(done.exhaustive()).toBe("p");
+  });
+});

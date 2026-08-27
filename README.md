@@ -39,6 +39,16 @@ ui.match("pending", () => <>Loading...</>)
   .exhaustive();
 ```
 
+When the status is already known, pass it directly — no `set()` callback:
+
+```tsx
+getUiState(query.status)
+  .match("pending", () => <>Loading...</>)
+  .match("error", () => <>Error</>)
+  .match("success", () => <>Ready</>)
+  .exhaustive();
+```
+
 ## 🪄 Fully customizable and type-safe
 
 ```tsx

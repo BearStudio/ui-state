@@ -18,6 +18,9 @@ type UiStateError<Message extends string> = null | {
 
 type NonExhaustiveError<Message extends string = ""> = UiStateError<Message>;
 type ExhaustiveError<Message extends string = ""> = UiStateError<Message>;
+type ForbidWideString<S extends string> = string extends S
+  ? ExhaustiveError<"`string` cannot be exhaustive. Use a string literal union.">
+  : S;
 
 type Prettify<T> = { [K in keyof T]: T[K] } & {};
 
@@ -41,7 +44,7 @@ type GetUiStateSet = <
   S extends AvailableStatus,
   SData extends Record<string, unknown> | undefined = undefined,
 >(
-  status: S,
+  status: ForbidWideString<S>,
   data?: SData,
 ) => SetResult<S, SData>;
 
@@ -58,6 +61,21 @@ type MatchResult<Rest extends { __status: string }> = {
       exhaustive: ExhaustiveError<`${Rest["__status"]} is missing to use \`exhaustive()\``>;
       match: UiState<Rest>["match"];
     });
+
+type SplitStatus<S extends string> = S extends unknown
+  ? { __status: S }
+  : never;
+
+type UiStateFromInput<T> = [T] extends [(...args: never[]) => unknown]
+  ? UiState<
+      Extract<
+        ReturnType<Extract<T, (...args: never[]) => unknown>>,
+        { __status: AvailableStatus }
+      >
+    >
+  : [T] extends [string]
+    ? UiState<SplitStatus<T>>
+    : never;
 
 type UiState<T extends { __status: AvailableStatus }> = {
   is: <S extends T["__status"]>(
@@ -82,28 +100,21 @@ type UiState<T extends { __status: AvailableStatus }> = {
   ) => MatchResult<ExcludeStatus<T, S>>;
 };
 
-export const getUiState = <T extends { __status: AvailableStatus }>(
-  getState: (set: GetUiStateSet) => T,
+const createUiState = <T extends { __status: AvailableStatus }>(
+  state: T,
 ): UiState<T> => {
-  const state = Object.freeze(
-    getState(((status, data = {} as ExplicitAny) => {
-      return {
-        __status: status,
-        ...data,
-      };
-    }) as GetUiStateSet),
-  );
+  const frozenState = Object.freeze(state);
 
   const isMatching = (status: T["__status"]): boolean =>
-    status === state.__status;
+    status === frozenState.__status;
 
   const isMatchingArray = (status: Array<T["__status"]>): boolean =>
-    status.includes(state.__status);
+    status.includes(frozenState.__status);
 
   const uiState: UiState<T> = {
-    state,
+    state: frozenState,
     is: ((status: T["__status"]) => {
-      return state.__status === status;
+      return frozenState.__status === status;
     }) as UiState<T>["is"],
     when: (status, handler) => {
       if (
@@ -111,7 +122,7 @@ export const getUiState = <T extends { __status: AvailableStatus }>(
           ? isMatching(status)
           : isMatchingArray(status)
       ) {
-        return handler(state as ExplicitAny);
+        return handler(frozenState as ExplicitAny);
       }
       return null;
     },
@@ -125,9 +136,10 @@ export const getUiState = <T extends { __status: AvailableStatus }>(
           : isMatchingArray(status))
       ) {
         return {
-          exhaustive: () => handler(state as ExplicitAny) as React.ReactNode,
+          exhaustive: () =>
+            handler(frozenState as ExplicitAny) as React.ReactNode,
           nonExhaustive: () =>
-            handler(state as ExplicitAny) as React.ReactNode,
+            handler(frozenState as ExplicitAny) as React.ReactNode,
           match: (nextStatus: ExplicitAny, nextHandler: ExplicitAny) =>
             uiState.match(nextStatus, nextHandler, true, () =>
               handler(uiState.state as ExplicitAny),
@@ -146,3 +158,23 @@ export const getUiState = <T extends { __status: AvailableStatus }>(
 
   return uiState;
 };
+
+export function getUiState<
+  T extends string | ((set: GetUiStateSet) => { __status: AvailableStatus }),
+>(
+  statusOrGetState: T extends string ? ForbidWideString<T> : T,
+): UiStateFromInput<T>;
+export function getUiState(
+  statusOrGetState: ExplicitAny,
+): UiState<{ __status: AvailableStatus }> {
+  if (typeof statusOrGetState === "string") {
+    return createUiState({ __status: statusOrGetState });
+  }
+
+  return createUiState(
+    statusOrGetState((status: AvailableStatus, data = {} as ExplicitAny) => ({
+      __status: status,
+      ...data,
+    })),
+  );
+}
