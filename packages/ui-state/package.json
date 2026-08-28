@@ -31,7 +31,6 @@
     }
   },
   "publishConfig": {
-    "access": "public",
     "exports": {
       ".": {
         "types": "./dist/index.d.ts",
@@ -39,7 +38,8 @@
         "require": "./dist/index.cjs",
         "default": "./dist/index.js"
       }
-    }
+    },
+    "access": "public"
   },
   "scripts": {
     "dev": "tsup src/index.ts --format esm,cjs --watch",

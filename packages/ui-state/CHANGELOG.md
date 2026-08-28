@@ -15,6 +15,7 @@
 
 - Upgrade TypeScript to 7.0.2 and replace ESLint/Prettier with oxlint/oxfmt. No public API changes.
 - Point published `exports.types` at `./dist/index.d.ts`. `.npmignore` strips `src/`, so the previous `./src/index.ts` path 404'd for consumers under bundler/NodeNext.
+- 80aba69: Point published `exports.types` at `./dist/index.d.ts`. `.npmignore` strips `src/`, so the previous `./src/index.ts` path 404'd for consumers under bundler/NodeNext.
 
 ## 1.1.0
 
