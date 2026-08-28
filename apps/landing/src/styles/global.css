@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-roboto-slab), ui-serif, Georgia, serif;
+  --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  --color-paper: #ffffff;
+  --color-paper-2: #e4eef0;
+  --color-ink: #0a2f39;
+  --color-ink-soft: #135d71;
+  --color-line: #c8e1e4;
+  --color-accent: #ffbf0f;
+  --color-accent-ink: #0a2f39;
+  --color-hero: #0a2f39;
+  --color-hero-fg: #e4eef0;
+  --color-code: #08242b;
+  --color-code-muted: #67a7b6;
+  --color-comment: #3d7a4a;
+  --color-code-comment: #8fbc7a;
+  --color-code-kw: #9ac8d1;
+  --color-code-str: #c8e1e4;
+  --color-code-fn: #ffed4d;
+  --color-jsx: #c45c26;
+  --color-code-jsx: #ffb38a;
+  --color-ok: #207588;
+  --color-err: #b42318;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+  accent-color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+code,
+pre,
+.font-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-ink);
+}
+
+a {
+  text-underline-offset: 0.18em;
+}
+
+textarea,
+input {
+  caret-color: var(--color-ink);
+}
+
+.th-comment {
+  font-style: italic;
+}
+
+#compare pre.th-code {
+  margin: 0;
+  overflow-x: auto;
+  padding-block: 1rem;
+  padding-inline: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5rem;
+  border: 0;
+  border-radius: 0;
+}
+
+#compare pre.th-code code {
+  display: block;
+  min-width: 100%;
+  width: max-content;
+}
+
+#compare .th-line {
+  box-sizing: border-box;
+  min-width: 100%;
+  width: auto;
+  padding-left: 1.25rem;
+  padding-right: 1rem;
+}
+
+#compare .th-line--deleted {
+  background: color-mix(in srgb, var(--th-deleted) 18%, transparent);
+  box-shadow: inset 3px 0 0 var(--th-deleted);
+}
+
+#compare .th-line--inserted {
+  background: color-mix(in srgb, var(--th-inserted) 18%, transparent);
+  box-shadow: inset 3px 0 0 var(--th-inserted);
+}
+
+@media (min-width: 640px) {
+  #compare pre.th-code {
+    font-size: 0.875rem;
+  }
+}

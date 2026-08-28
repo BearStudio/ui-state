@@ -1,0 +1,10 @@
+{
+  "extends": "@bearstudio/typescript-config/astro.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["dist", "node_modules", ".astro"]
+}

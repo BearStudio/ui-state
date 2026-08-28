@@ -1,0 +1,72 @@
+---
+import { Font } from "astro:assets";
+import { highlightThemeCss } from "../lib/highlight";
+import "../styles/global.css";
+
+type Props = {
+  title: string;
+  description: string;
+};
+
+const { title, description } = Astro.props;
+const canonical = "https://github.com/BearStudio/ui-state";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "BearStudio",
+      url: "https://www.bearstudio.fr",
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: "@bearstudio/ui-state",
+      applicationCategory: "DeveloperApplication",
+      operatingSystem: "Web",
+      license: "https://opensource.org/licenses/MIT",
+      url: canonical,
+    },
+    {
+      "@type": "WebPage",
+      name: title,
+      description,
+      url: canonical,
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a2f39" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <Font cssVariable="--font-roboto-slab" preload />
+    <Font cssVariable="--font-inter" preload />
+    <Font cssVariable="--font-ibm-plex-mono" />
+    <Fragment set:html={`<style>${highlightThemeCss}</style>`} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="min-h-dvh bg-paper text-ink antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-accent focus:px-3 focus:py-2 focus:text-ink"
+    >
+      Skip to content
+    </a>
+    <slot />
+  </body>
+</html>

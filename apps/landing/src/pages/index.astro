@@ -1,0 +1,118 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CompareCode from "../components/CompareCode.astro";
+import { CopyCommand } from "../components/CopyCommand.tsx";
+import { StateDemo } from "../components/StateDemo.tsx";
+
+const title = "@bearstudio/ui-state — exhaustive UI states for React";
+const description =
+  "A small TypeScript helper that maps pending, error, and custom statuses onto match + exhaustive(). Miss a status, tsc fails.";
+const github = "https://github.com/BearStudio/ui-state";
+const article = "https://www.bearstudio.fr/en/blog/posts/why-did-we-create-ui-state";
+const install = "pnpm add @bearstudio/ui-state";
+---
+
+<Layout title={title} description={description}>
+  <header class="bg-hero text-hero-fg">
+    <div
+      class="mx-auto flex max-w-4xl items-center justify-between gap-2 px-4 py-3 sm:gap-4"
+    >
+      <a
+        href="/"
+        class="inline-flex min-h-11 min-w-0 items-center font-mono text-xs font-medium text-hero-fg sm:text-sm"
+      >
+        @bearstudio/ui-state
+      </a>
+      <nav aria-label="Primary" class="shrink-0">
+        <ul class="flex items-center gap-0.5 text-sm sm:gap-1">
+          <li>
+            <a
+              href={github}
+              class="inline-flex min-h-11 items-center px-1.5 text-hero-fg/80 hover:text-accent sm:px-2"
+            >
+              GitHub
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <section class="mx-auto max-w-3xl px-4 py-20 text-center sm:py-28">
+      <h1
+        class="font-heading text-4xl font-bold tracking-tight text-balance text-accent sm:text-6xl"
+      >
+        One explicit UI state. Exhaustive, typed renders.
+      </h1>
+      <p class="mx-auto mt-5 max-w-3xl text-lg text-hero-fg/80 sm:text-xl">
+        Name every display condition on one match chain.<br />
+        Miss a case, TypeScript fails.
+      </p>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+        <CopyCommand client:load command={install} />
+        <a href={github} class="text-sm text-hero-fg/80 hover:text-accent">
+          GitHub
+        </a>
+      </div>
+      <p class="mt-8">
+        <a
+          href={article}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-sm font-medium text-hero-fg/80 hover:text-accent"
+        >
+          See why did we create ui-state
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          </svg>
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+      </p>
+    </section>
+  </header>
+
+  <main id="main">
+    <section id="compare">
+      <div class="mx-auto w-full min-w-0 max-w-4xl px-4 py-20">
+        <h2 class="sr-only">Compare</h2>
+        <CompareCode />
+
+        <div id="demo" class="mt-12 min-w-0 max-w-3xl">
+          <h2 class="font-heading text-2xl font-bold tracking-tight">
+            Try it!
+          </h2>
+          <div class="mt-6">
+            <StateDemo client:visible />
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-line">
+    <div
+      class="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-sm text-ink-soft"
+    >
+      <p>MIT · BearStudio</p>
+      <p>
+        <a href={article} class="hover:text-ink">Why we built this</a>
+        <span aria-hidden="true"> · </span>
+        <a href={github} class="hover:text-ink">GitHub</a>
+        <span aria-hidden="true"> · </span>
+        <a href="https://www.bearstudio.fr" class="hover:text-ink">bearstudio.fr</a>
+      </p>
+    </div>
+  </footer>
+</Layout>

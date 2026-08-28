@@ -1,0 +1,67 @@
+---
+import { highlightDiff } from "../lib/highlight";
+
+const html = highlightDiff([
+  {
+    kind: "deleted",
+    code: `// Convenient to factor, but this bypasses inference and type safety.
+const bears = query.data ?? [];
+const search = filters.search;`,
+  },
+  { kind: "common", code: "" },
+  {
+    kind: "inserted",
+    code: `// The logic that defines every possible UI state.
+const ui = getUiState((set) => {
+  if (query.isPending) return set("pending");
+  if (query.isError && query.error.code === "FORBIDDEN") return set("forbidden");
+  if (query.isError) return set("error");
+  // Correctly inferred here — no need to fall back with ?? [].
+  const bears = query.data;
+  if (!bears.length && filters.search) return set("empty-search", { search: filters.search });
+  if (!bears.length) return set("empty");
+  return set("default", { bears });
+});`,
+  },
+  { kind: "common", code: "" },
+  {
+    kind: "common",
+    code: `return (
+  <>`,
+  },
+  {
+    kind: "deleted",
+    code: `    // State logic mixed with each render = a mess.
+    {query.isPending && <Spinner />}
+    {!query.isPending && query.isError && query.error.code === "FORBIDDEN" && <Forbidden />}
+    {!query.isPending && query.isError && query.error.code !== "FORBIDDEN" && <Error />}
+    {!query.isPending && !query.isError && !bears.length && search && <NoResults search={search} />}
+    {!query.isPending && !query.isError && !bears.length && !search && <Empty />}
+    {!query.isPending && !query.isError && !!bears.length && <List bears={bears} />}`,
+  },
+  { kind: "common", code: "" },
+  {
+    kind: "inserted",
+    code: `    // Clear render handling for each state, with inferred types.
+    {ui.match("pending", () => <Spinner />)
+      .match("forbidden", () => <Forbidden />)
+      .match("error", () => <Error />)
+      .match("empty-search", ({ search }) => <NoResults search={search} />)
+      .match("empty", () => <Empty />)
+      .match("default", ({ bears }) => <List bears={bears} />)
+      .exhaustive()}`,
+  },
+  {
+    kind: "common",
+    code: `  </>
+);`,
+  },
+]);
+---
+
+<figure>
+  <figcaption class="sr-only">
+    Before code highlighted in red, after code highlighted in green
+  </figcaption>
+  <div class="overflow-hidden rounded-lg border border-line bg-code" set:html={html} />
+</figure>
